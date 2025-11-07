@@ -1,26 +1,60 @@
 @import "tailwindcss";
 
+/* 🎨 Base Theme Variables (Light Default) */
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --accent: #ec4899;
+  --accent-hover: #db2777;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --card: #f3f4f6;
 }
 
+/* 🧩 Tailwind variable mapping */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-card: var(--card);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* 🌗 Dark Mode (activated via html[data-theme="dark"]) */
+html[data-theme="dark"] {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --accent: #ec4899;
+  --accent-hover: #db2777;
+  --muted: #9ca3af;
+  --border: #1f2937;
+  --card: #111111;
 }
 
+/* 🪄 Smooth transitions */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: system-ui, sans-serif;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* ✨ Link Styles */
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--accent-hover);
+}
+
+/* 🌈 Utility */
+.border-theme {
+  border-color: var(--border);
+}
+.card {
+  background-color: var(--card);
+  color: var(--foreground);
 }
