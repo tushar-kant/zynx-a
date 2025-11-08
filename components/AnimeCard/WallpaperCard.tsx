@@ -1,83 +1,96 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import logo from "@/public/logo.png";
 
 type WallpaperCardProps = {
   id: string;
   title: string;
+  slug: string;
   url: string;
-  downloadUrl: string;
   tags: string[];
+  live?: boolean; // ✅ optional flag for live wallpapers
 };
 
 export default function WallpaperCard({
   id,
   title,
+  slug,
   url,
-  downloadUrl,
   tags,
+  live = false,
 }: WallpaperCardProps) {
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator
-        .share({
-          title,
-          text: "Check out this anime wallpaper from Zynx Wallpapers!",
-          url: window.location.href,
-        })
-        .catch(() => console.log("Share canceled or failed."));
-    } else {
-      alert("Sharing is not supported on this device.");
-    }
-  };
+  // ✅ Safe extraction of route segments
+  let animeSlug = "";
+  let characterSlug = "";
+
+  if (typeof window !== "undefined") {
+    const parts = window.location.pathname.split("/");
+    animeSlug = parts[2];
+    characterSlug = parts[3];
+  }
+
+  // ✅ Dynamic route depending on "live"
+  const previewPath = live
+    ? `/anime-live/${animeSlug}/${characterSlug}/preview`
+    : `/anime/${animeSlug}/${characterSlug}/preview`;
 
   return (
-    <div
+    <Link
+      href={{
+        pathname: previewPath,
+        query: { wallSlug: slug },
+      }}
       key={id}
       className="group relative rounded-2xl overflow-hidden border border-[var(--border)] bg-[var(--card)] hover:shadow-2xl hover:scale-[1.02] transition-all duration-300"
     >
-      {/* Wallpaper Image */}
+      {/* Media Preview */}
       <div className="relative w-full h-64 overflow-hidden">
-        <Image
-          src={url || logo}
-          alt={title}
-          fill
-          className="object-cover transition-transform duration-300 group-hover:scale-110"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = logo.src;
-          }}
-        />
+        {live ? (
+          // 🎥 Video Preview for Live Wallpapers
+          <video
+            src={url}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+            onError={(e) => {
+              console.error("Video failed to load:", e);
+            }}
+          />
+        ) : (
+          // 🖼 Static Image for Normal Wallpapers
+          <Image
+            src={url || logo}
+            alt={title}
+            fill
+            className="object-cover transition-transform duration-300 group-hover:scale-110"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = logo.src;
+            }}
+          />
+        )}
 
-        {/* Hover Overlay with Actions */}
-    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-  <div className="flex gap-3">
-    <a
-      href={downloadUrl || url}
-      download
-      target="_blank"
-      rel="noopener noreferrer"
-      className="bg-[var(--accent)] text-white font-semibold hover:brightness-110 hover:shadow-lg px-4 py-2 rounded-full text-sm transition"
-    >
-      Download
-    </a>
-    <button
-      onClick={handleShare}
-      className="bg-white/90 text-black font-semibold hover:bg-white px-4 py-2 rounded-full text-sm transition shadow-md hover:shadow-lg"
-    >
-      Share
-    </button>
-  </div>
-</div>
+        {/* 🔥 LIVE Badge for Video Wallpapers */}
+        {live && (
+          <span className="absolute top-3 left-3 bg-[var(--accent)] text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
+            LIVE
+          </span>
+        )}
 
+        <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition" />
       </div>
 
-      {/* Wallpaper Info */}
+      {/* Info Section */}
       <div className="p-4 text-left">
         <h2 className="text-lg font-semibold text-[var(--accent)]">
-          {title}
+          {live ? `${title} (Live)` : title}
         </h2>
+
         <div className="flex flex-wrap gap-2 mt-2">
           {tags.map((tag, i) => (
             <span
@@ -89,6 +102,6 @@ export default function WallpaperCard({
           ))}
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

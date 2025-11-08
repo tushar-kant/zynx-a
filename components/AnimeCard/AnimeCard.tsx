@@ -10,12 +10,23 @@ type AnimeCardProps = {
   slug: string;
   description: string;
   cover: string;
+  live?: boolean; // ✅ optional flag to mark if it's a live anime section
 };
 
-export default function AnimeCard({ id, name, slug, description, cover }: AnimeCardProps) {
+export default function AnimeCard({
+  id,
+  name,
+  slug,
+  description,
+  cover,
+  live = false,
+}: AnimeCardProps) {
+  // ✅ dynamic route
+  const href = live ? `/anime-live/${slug}` : `/anime/${slug}`;
+
   return (
     <Link
-      href={`/anime/${slug}`}
+      href={href}
       key={id}
       className="group rounded-2xl overflow-hidden border border-[var(--border)] bg-[var(--card)] hover:shadow-2xl hover:scale-[1.02] transition-all duration-300"
     >
@@ -31,18 +42,23 @@ export default function AnimeCard({ id, name, slug, description, cover }: AnimeC
             target.src = logo.src;
           }}
         />
+
         {/* Hover Overlay */}
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-          <span className="text-white text-lg font-bold">{name}</span>
+          <span className="text-white text-lg font-bold">
+            {live ? `${name} (Live)` : name}
+          </span>
         </div>
       </div>
 
       {/* Text Content */}
       <div className="p-5 text-left">
         <h2 className="text-xl font-semibold mb-2 text-[var(--accent)]">
-          {name}
+          {live ? `${name} (Live)` : name}
         </h2>
-        <p className="text-[var(--muted)] text-sm line-clamp-2">{description}</p>
+        <p className="text-[var(--muted)] text-sm line-clamp-2">
+          {description}
+        </p>
       </div>
     </Link>
   );

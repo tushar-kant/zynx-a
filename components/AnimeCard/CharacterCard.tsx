@@ -11,6 +11,7 @@ type CharacterCardProps = {
   name: string;
   description: string;
   image: string;
+  live?: boolean; // ✅ optional flag for live route
 };
 
 export default function CharacterCard({
@@ -20,10 +21,16 @@ export default function CharacterCard({
   name,
   description,
   image,
+  live = false,
 }: CharacterCardProps) {
+  // ✅ dynamic route: if live → /anime-live/... else → /anime/...
+  const href = live
+    ? `/anime-live/${animeSlug}/${slug}`
+    : `/anime/${animeSlug}/${slug}`;
+
   return (
     <Link
-      href={`/anime/${animeSlug}/${slug}`}
+      href={href}
       key={id}
       className="group block rounded-2xl overflow-hidden border border-[var(--border)] bg-[var(--card)] hover:shadow-2xl hover:scale-[1.02] transition-all duration-300"
     >
@@ -39,6 +46,15 @@ export default function CharacterCard({
             target.src = logo.src;
           }}
         />
+
+        {/* 🔥 Optional LIVE badge */}
+        {live && (
+          <span className="absolute top-3 left-3 bg-[var(--accent)] text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
+            LIVE
+          </span>
+        )}
+
+        {/* Hover overlay */}
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
           <span className="text-white text-lg font-semibold">{name}</span>
         </div>

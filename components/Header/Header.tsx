@@ -88,7 +88,7 @@ export default function Header() {
         <nav className="flex flex-col px-6 py-4 space-y-4 text-[var(--muted)]">
           {[
             { href: "/", label: "Home" },
-            { href: "/wallpapers", label: "Wallpapers" },
+            { href: "/anime-live", label: "Live anime" },
             { href: "/anime", label: "Anime" },
             { href: "/about", label: "About" },
           ].map(({ href, label }) => (
