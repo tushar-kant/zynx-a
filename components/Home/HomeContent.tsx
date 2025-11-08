@@ -153,28 +153,35 @@ const categories = [
       </div>
 
       {/* ✨ Categories Section */}
-      <div className="py-20 bg-[var(--card)] border-t border-b border-[var(--border)]">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-bold mb-4">✨ Explore by Anime</h2>
-          <p className="text-[var(--muted)] text-lg mb-12">
-            Choose your favorite series to browse wallpapers
-          </p>
+<div className="py-20 bg-[var(--background)]">
+  <div className="max-w-6xl mx-auto px-6">
+    <div className="text-center mb-14">
+      <h2 className="text-4xl font-bold text-[var(--foreground)] mb-2">
+        Browse Anime
+      </h2>
+      <div className="w-20 h-1 bg-[var(--accent)] mx-auto rounded-full" />
+    </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
-            {categories.map((cat, i) => (
-              <Link
-                key={i}
-                href={`/anime/${cat.name.toLowerCase().replace(/\s+/g, "-")}`}
-                className={`relative flex flex-col items-center justify-center p-8 rounded-2xl bg-gradient-to-br ${cat.color} text-white font-semibold text-lg text-center shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300`}
-              >
-                <span className="text-3xl mb-3">{cat.icon}</span>
-                <span>{cat.name}</span>
-                <div className="absolute inset-0 bg-white/10 opacity-0 hover:opacity-100 rounded-2xl transition"></div>
-              </Link>
-            ))}
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
+      {categories.map((cat, i) => (
+        <Link
+          key={i}
+          href={`/anime/${cat.name.toLowerCase().replace(/\s+/g, "-")}`}
+          className="group flex flex-col items-center gap-3 p-6 rounded-2xl bg-[var(--card)] border border-[var(--border)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:border-[var(--accent)] transition-all duration-300"
+        >
+          <div className="w-14 h-14 flex items-center justify-center rounded-full bg-[var(--background)] group-hover:bg-[var(--accent)] transition-colors duration-300">
+            <span className="text-2xl group-hover:scale-110 transition-transform duration-300">
+              {cat.icon}
+            </span>
           </div>
-        </div>
-      </div>
+          <span className="text-sm font-medium text-[var(--foreground)] text-center leading-tight">
+            {cat.name}
+          </span>
+        </Link>
+      ))}
+    </div>
+  </div>
+</div>
 
 
     </section>
