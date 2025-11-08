@@ -26,7 +26,7 @@ export async function POST(request: Request) {
       cloudinary.uploader
         .upload_stream(
           {
-            folder: "zynx-anime/images",
+            folder: "zynx-anime/naruto",
             resource_type: "image",
           },
           (error, result) => {

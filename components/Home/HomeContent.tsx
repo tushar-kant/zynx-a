@@ -11,39 +11,46 @@ export default function HomeContent() {
       title: "Naruto Uzumaki",
       anime: "Naruto",
       downloads: "2.4K",
-      cover: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762538047/zynx-anime/u4muofyw343l4nhw7nof.jpg",
+      cover: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762580149/zynx-anime/naruto/sb8w6dd18yll3lrwm7hu.jpg",
     },
     {
       id: 2,
       title: "Luffy Gear Fifth",
       anime: "One Piece",
       downloads: "3.1K",
-      cover: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762538047/zynx-anime/u4muofyw343l4nhw7nof.jpg",
+      cover: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762538098/zynx-anime/pmptes9hx3ehsxocnqir.jpg",
     },
     {
       id: 3,
-      title: "Gojo Satoru",
-      anime: "Jujutsu Kaisen",
+      title: "Muzen",
+      anime: "Demon slayer",
       downloads: "2.8K",
-      cover: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762538047/zynx-anime/u4muofyw343l4nhw7nof.jpg",
+      cover: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762537348/zynx-anime/b3oddwrpknooa97cl8cm.jpg",
     },
     {
       id: 4,
-      title: "Tanjiro Kamado",
-      anime: "Demon Slayer",
+      title: "kakashi",
+      anime: "Naruto",
       downloads: "2.2K",
       cover: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762538047/zynx-anime/u4muofyw343l4nhw7nof.jpg",
     },
   ];
 
-  const categories = [
-    { name: "Naruto", color: "from-orange-500 to-red-600", icon: "🥷" },
-    { name: "One Piece", color: "from-blue-500 to-cyan-400", icon: "🏴‍☠️" },
-    { name: "Bleach", color: "from-gray-600 to-red-500", icon: "🌀" },
-    { name: "Attack on Titan", color: "from-green-700 to-yellow-500", icon: "⚔️" },
-    { name: "Demon Slayer", color: "from-pink-500 to-purple-600", icon: "🔥" },
-    { name: "Jujutsu Kaisen", color: "from-indigo-500 to-blue-700", icon: "💫" },
-  ];
+const categories = [
+  { name: "Naruto", color: "from-orange-500 to-red-600", icon: "🥷" },
+  { name: "One Piece", color: "from-blue-500 to-cyan-400", icon: "🏴‍☠️" },
+  { name: "Bleach", color: "from-gray-600 to-red-500", icon: "⚔️" },
+  { name: "Attack on Titan", color: "from-yellow-700 to-orange-500", icon: "🔥" },
+  { name: "Demon Slayer", color: "from-pink-500 to-purple-600", icon: "💫" },
+  { name: "Jujutsu Kaisen", color: "from-indigo-500 to-blue-700", icon: "👊" },
+  { name: "One Punch Man", color: "from-yellow-400 to-red-600", icon: "💥" },
+  { name: "Death Note", color: "from-gray-800 to-black", icon: "☠️" },
+  { name: "Fullmetal Alchemist", color: "from-amber-600 to-red-700", icon: "⚗️" },
+  { name: "My Hero Academia", color: "from-green-500 to-teal-500", icon: "🦸‍♂️" },
+  { name: "Solo Leveling", color: "from-blue-800 to-purple-700", icon: "⚔️" },
+  { name: "Dragon Ball", color: "from-yellow-500 to-orange-600", icon: "🐉" },
+];
+
 
   const stats = [
     { number: "10K+", label: "HD Wallpapers" },
@@ -86,25 +93,26 @@ export default function HomeContent() {
           </div>
 
           {/* View All on Right */}
-          <Link
-            href="/wallpapers"
-            className="inline-flex items-center gap-2 bg-[var(--accent)] text-white px-8 py-3 rounded-full font-semibold hover:scale-105 transition-all duration-300 hover:shadow-lg"
-          >
-            View All
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
-          </Link>
+        <Link
+  href="/anime"
+  className="inline-flex items-center gap-2 bg-white text-[var(--accent)] px-8 py-3 rounded-full font-semibold hover:bg-[var(--accent)] hover:text-white transition-all duration-300 shadow-md hover:shadow-lg"
+>
+  View All
+  <svg
+    className="w-5 h-5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M17 8l4 4m0 0l-4 4m4-4H3"
+    />
+  </svg>
+</Link>
+
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

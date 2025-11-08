@@ -3,37 +3,31 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const characterId = searchParams.get("characterId");
+  const characterSlug = searchParams.get("characterSlug");
   const slug = searchParams.get("slug");
   const liveParam = searchParams.get("live"); // "true" or "false"
 
-  // 🧩 Mock data (add 'live' property for filtering)
+  // 🧩 Mock data with both IDs and Slugs
   const wallpapers = [
     {
       characterId: "101",
+      characterSlug: "naruto-uzumaki",
       list: [
         {
           id: "naruto-001",
           slug: "naruto-sage-mode",
           title: "Naruto Sage Mode",
-          url: "",
-          downloadUrl: "",
+          url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762580149/zynx-anime/naruto/sb8w6dd18yll3lrwm7hu.jpg",
+          downloadUrl:
+            "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762580149/zynx-anime/naruto/sb8w6dd18yll3lrwm7hu.jpg",
           live: false,
           tags: ["Naruto", "Sage Mode", "Anime", "Wallpaper", "4K"],
-        },
-        {
-          id: "naruto-002",
-          slug: "naruto-kurama-mode",
-          title: "Naruto Kurama Mode",
-          url: "https://res.cloudinary.com/dk0sslz1q/video/upload/v1762574176/zynx-anime/videos/hu1w5c36cv9zopu570ea.mp4",
-          downloadUrl:
-            "https://res.cloudinary.com/dk0sslz1q/video/upload/v1762574176/zynx-anime/videos/hu1w5c36cv9zopu570ea.mp4",
-          live: true,
-          tags: ["Naruto", "Kurama", "Anime", "Glow", "Power"],
         },
       ],
     },
     {
       characterId: "102",
+      characterSlug: "itachi-uchiha",
       list: [
         {
           id: "itachi-001",
@@ -55,10 +49,62 @@ export async function GET(request: Request) {
         },
       ],
     },
+    {
+      characterId: "103",
+      characterSlug: "kakashi-hatake",
+      list: [
+        {
+          id: "kakashi-001",
+          slug: "kakashi-lightning-blade",
+          title: "Kakashi Lightning Blade",
+          url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762538047/zynx-anime/u4muofyw343l4nhw7nof.jpg",
+          downloadUrl:
+            "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762538047/zynx-anime/u4muofyw343l4nhw7nof.jpg",
+          live: false,
+          tags: ["Kakashi", "Lightning Blade", "Chidori", "Anime", "4K"],
+        },
+      ],
+    },
+    {
+      characterId: "201",
+      characterSlug: "monkey-d-luffy",
+      list: [
+        {
+          id: "luffy-001",
+          slug: "luffy-gear-5",
+          title: "Luffy Gear 5",
+          url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762538098/zynx-anime/pmptes9hx3ehsxocnqir.jpg",
+          downloadUrl:
+            "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762538098/zynx-anime/pmptes9hx3ehsxocnqir.jpg",
+          live: false,
+          tags: ["Luffy", "Gear 5", "One Piece", "Anime", "Wallpaper"],
+        },
+        {
+          id: "luffy-002",
+          slug: "luffy-red-hawk",
+          title: "Luffy Red Hawk",
+          url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762538098/zynx-anime/pmptes9hx3ehsxocnqir.jpg",
+          downloadUrl:
+            "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762538098/zynx-anime/pmptes9hx3ehsxocnqir.jpg",
+          live: false,
+          tags: ["Luffy", "Fire Fist", "Action", "One Piece", "4K"],
+        },
+        {
+          id: "luffy-003",
+          slug: "luffy-gear-4-bounce-man",
+          title: "Luffy Gear 4 Bounce Man",
+          url: "https://res.cloudinary.com/dk0sslz1q/video/upload/v1762574176/zynx-anime/videos/hu1w5c36cv9zopu570ea.mp4",
+          downloadUrl:
+            "https://res.cloudinary.com/dk0sslz1q/video/upload/v1762574176/zynx-anime/videos/hu1w5c36cv9zopu570ea.mp4",
+          live: true,
+          tags: ["Luffy", "Gear 4", "Bounce Man", "One Piece", "Live Wallpaper"],
+        },
+      ],
+    },
   ];
 
   try {
-    // ✅ Case 1: Fetch single wallpaper by slug
+    // ✅ Case 1: Fetch a single wallpaper by its slug
     if (slug) {
       const found = wallpapers
         .flatMap((group) => group.list)
@@ -74,43 +120,32 @@ export async function GET(request: Request) {
       return NextResponse.json({ success: true, data: found });
     }
 
-    // ✅ Case 2: Fetch all wallpapers for a character (with optional filtering)
-    if (characterId) {
-      const result = wallpapers.find((w) => w.characterId === characterId);
+    // ✅ Case 2: Fetch wallpapers by character ID or Slug
+    let result =
+      wallpapers.find((w) => w.characterId === characterId) ||
+      wallpapers.find((w) => w.characterSlug === characterSlug);
 
-      if (!result) {
-        return NextResponse.json(
-          { success: false, message: "No wallpapers found for this character." },
-          { status: 404 }
-        );
-      }
-
-      // 🔥 Filtering logic
-      let filteredList = result.list;
-
-      if (liveParam === "true") {
-        filteredList = result.list.filter((w) => w.live === true);
-      } else if (liveParam === "false" || !liveParam) {
-        // Default: static only
-        filteredList = result.list.filter((w) => w.live === false);
-      }
-
-      return NextResponse.json({
-        success: true,
-        total: filteredList.length,
-        data: filteredList,
-      });
+    if (!result) {
+      return NextResponse.json(
+        { success: false, message: "No wallpapers found for this character." },
+        { status: 404 }
+      );
     }
 
-    // ✅ Case 3: No valid query provided
-    return NextResponse.json(
-      {
-        success: false,
-        message:
-          "Please provide either characterId or slug as query parameter.",
-      },
-      { status: 400 }
-    );
+    // ✅ Filtering logic for "live" parameter
+    let filteredList = result.list;
+
+    if (liveParam === "true") {
+      filteredList = result.list.filter((w) => w.live === true);
+    } else if (liveParam === "false" || !liveParam) {
+      filteredList = result.list.filter((w) => w.live === false);
+    }
+
+    return NextResponse.json({
+      success: true,
+      total: filteredList.length,
+      data: filteredList,
+    });
   } catch (error) {
     console.error("Error in /api/wallpapers:", error);
     return NextResponse.json(
