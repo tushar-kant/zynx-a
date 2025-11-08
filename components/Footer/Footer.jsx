@@ -79,7 +79,7 @@ export default function Footer() {
                 <FaInstagram className="w-4 h-4" />
               </a>
               <a
-                href="https://twitter.com"
+                href="https://www.instagram.com/zynx.v1/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-[var(--accent)] hover:scale-110 transition-all"
@@ -88,7 +88,7 @@ export default function Footer() {
                 <FaXTwitter className="w-4 h-4" />
               </a>
               <a
-                href="https://discord.gg"
+                href="https://www.instagram.com/zynx.v1/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-[var(--accent)] hover:scale-110 transition-all"
@@ -97,7 +97,7 @@ export default function Footer() {
                 <FaDiscord className="w-4 h-4" />
               </a>
               <a
-                href="https://youtube.com/@zynxanime"
+                href="https://www.instagram.com/zynx.v1/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-[var(--accent)] hover:scale-110 transition-all"
@@ -126,7 +126,7 @@ export default function Footer() {
                 <FaInstagram className="w-4 h-4" />
               </a>
               <a
-                href="https://twitter.com"
+                href="https://www.instagram.com/zynx.v1/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-[var(--accent)] hover:scale-110 transition-all"
@@ -135,7 +135,7 @@ export default function Footer() {
                 <FaXTwitter className="w-4 h-4" />
               </a>
               <a
-                href="https://discord.gg"
+                href="https://www.instagram.com/zynx.v1/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-[var(--accent)] hover:scale-110 transition-all"
@@ -144,7 +144,7 @@ export default function Footer() {
                 <FaDiscord className="w-4 h-4" />
               </a>
               <a
-                href="https://youtube.com/@zynxanime"
+                href="https://www.instagram.com/zynx.v1/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-[var(--accent)] hover:scale-110 transition-all"
@@ -158,7 +158,7 @@ export default function Footer() {
             <p className="text-[10px] sm:text-xs text-center sm:text-left order-first sm:order-none">
               Made with{" "}
               <FaHeart className="inline w-3 h-3 text-[var(--accent)] mx-0.5 animate-pulse" />{" "}
-              by <span className="text-[var(--accent)] font-medium">Zynx Innovations</span>
+              by <span className="text-[var(--accent)] font-medium">Zynx anime</span>
             </p>
 
             <p className="text-[10px] sm:text-xs text-[var(--muted)]">

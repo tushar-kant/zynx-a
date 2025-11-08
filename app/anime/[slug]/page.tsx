@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -13,7 +14,7 @@ type Character = {
   image: string;
 };
 
-export default function AnimeCharactersPage() {
+ function AnimeCharactersPage() {
   const params = useParams();
   const router = useRouter();
   const slug = params.slug as string;
@@ -144,3 +145,5 @@ export default function AnimeCharactersPage() {
     </main>
   );
 }
+
+export default React.memo(AnimeCharactersPage);

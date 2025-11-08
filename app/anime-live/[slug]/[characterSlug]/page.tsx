@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -15,7 +16,7 @@ type Wallpaper = {
   live?: boolean;
 };
 
-export default function CharacterWallpapersPage() {
+ function CharacterWallpapersPage() {
   const params = useParams();
   const router = useRouter();
   const slug = params.slug as string;
@@ -169,3 +170,5 @@ export default function CharacterWallpapersPage() {
     </main>
   );
 }
+
+export default React.memo(CharacterWallpapersPage);

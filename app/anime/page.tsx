@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -13,7 +14,7 @@ type Anime = {
   cover: string;
 };
 
-export default function AnimePage() {
+ function AnimePage() {
   const [animeList, setAnimeList] = useState<Anime[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -147,3 +148,4 @@ export default function AnimePage() {
     </main>
   );
 }
+export default React.memo(AnimePage);
