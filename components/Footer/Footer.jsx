@@ -1,71 +1,170 @@
 "use client";
 
 import Link from "next/link";
-import { FaInstagram, FaTwitter, FaDiscord, FaHeart } from "react-icons/fa";
+import {
+  FaInstagram,
+  FaXTwitter,
+  FaDiscord,
+  FaHeart,
+  FaYoutube,
+} from "react-icons/fa6";
 
 export default function Footer() {
   return (
     <footer className="border-t border-[var(--border)] bg-[var(--card)] text-[var(--muted)] mt-16">
-      <div className="max-w-7xl mx-auto px-6 sm:px-10 py-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-8">
-        
-        {/* 🌸 Logo + Text */}
-        <div className="text-center sm:text-left">
-          <h2 className="text-2xl font-extrabold text-[var(--accent)] mb-2">
-            Zynx<span className="text-[var(--foreground)]">Anime</span>
-          </h2>
-          <p className="text-sm max-w-sm text-[var(--muted)]">
-            Free Anime Wallpapers, PFPs, and Live Backgrounds — 
-            crafted with love for otakus worldwide 💫
-          </p>
-        </div>
+      {/* Main Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+          {/* Logo + Description */}
+          <div className="col-span-2 md:col-span-1">
+            <h2 className="text-xl sm:text-2xl font-extrabold mb-2 bg-gradient-to-r from-[var(--accent)] to-purple-500 bg-clip-text text-transparent">
+              Zynx<span className="text-[var(--foreground)]">Anime</span>
+            </h2>
+            <p className="text-xs text-[var(--muted)] leading-relaxed max-w-[220px]">
+              Free Anime Wallpapers, Live Backgrounds, and PFPs — made for otakus worldwide 🌏
+            </p>
+          </div>
 
-        {/* 🔗 Quick Links */}
-        <div className="flex flex-wrap justify-center sm:justify-end gap-6 text-sm">
-          <Link href="/" className="hover:text-[var(--accent)] transition">Home</Link>
-          <Link href="/anime" className="hover:text-[var(--accent)] transition">Anime</Link>
-          <Link href="/anime-live" className="hover:text-[var(--accent)] transition">Live Anime</Link>
-          <Link href="/about" className="hover:text-[var(--accent)] transition">About</Link>
-          {/* <Link href="/fileupload" className="hover:text-[var(--accent)] transition">Upload</Link> */}
+          {/* Quick Navigation */}
+          <div className="flex flex-col gap-1.5">
+            <h3 className="text-[var(--accent)] font-semibold text-xs sm:text-sm mb-1">
+              Quick Links
+            </h3>
+            <Link href="/" className="text-xs sm:text-sm hover:text-[var(--accent)] transition">
+              Home
+            </Link>
+            <Link href="/anime" className="text-xs sm:text-sm hover:text-[var(--accent)] transition">
+              Anime
+            </Link>
+            <Link href="/anime-live" className="text-xs sm:text-sm hover:text-[var(--accent)] transition">
+              Live Anime
+            </Link>
+            {/* <Link href="/about" className="text-xs sm:text-sm hover:text-[var(--accent)] transition">
+              About
+            </Link> */}
+          </div>
+
+          {/* Legal & Support */}
+          <div className="flex flex-col gap-1.5">
+            <h3 className="text-[var(--accent)] font-semibold text-xs sm:text-sm mb-1">
+              Support
+            </h3>
+               <Link href="/about" className="text-xs sm:text-sm hover:text-[var(--accent)] transition">
+              About
+            </Link>
+            <Link href="/privacy-policy" className="text-xs sm:text-sm hover:text-[var(--accent)] transition">
+              Privacy Policy
+            </Link>
+            <Link href="/terms-and-conditions" className="text-xs sm:text-sm hover:text-[var(--accent)] transition">
+              Terms & Conditions
+            </Link>
+            <Link href="/contact" className="text-xs sm:text-sm hover:text-[var(--accent)] transition">
+              Contact Us
+            </Link>
+          </div>
+
+          {/* Social Icons - Desktop */}
+          <div className="hidden md:flex flex-col gap-1.5">
+            <h3 className="text-[var(--accent)] font-semibold text-xs sm:text-sm mb-1">
+              Connect
+            </h3>
+            <div className="flex items-center gap-3">
+              <a
+                href="https://instagram.com/zynx.v1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[var(--accent)] hover:scale-110 transition-all"
+                aria-label="Instagram"
+              >
+                <FaInstagram className="w-4 h-4" />
+              </a>
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[var(--accent)] hover:scale-110 transition-all"
+                aria-label="Twitter"
+              >
+                <FaXTwitter className="w-4 h-4" />
+              </a>
+              <a
+                href="https://discord.gg"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[var(--accent)] hover:scale-110 transition-all"
+                aria-label="Discord"
+              >
+                <FaDiscord className="w-4 h-4" />
+              </a>
+              <a
+                href="https://youtube.com/@zynxanime"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[var(--accent)] hover:scale-110 transition-all"
+                aria-label="YouTube"
+              >
+                <FaYoutube className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* 🌐 Social Links */}
-      <div className="border-t border-[var(--border)] py-6">
-        <div className="flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto px-6 sm:px-10 gap-4">
-          
-          {/* 💬 Social Icons */}
-          <div className="flex items-center gap-5 text-[var(--muted)]">
-            <a
-              href="https://instagram.com/zynx.v1"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-[var(--accent)] hover:scale-110 transition-all"
-            >
-              <FaInstagram className="w-5 h-5" />
-            </a>
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-[var(--accent)] hover:scale-110 transition-all"
-            >
-              <FaTwitter className="w-5 h-5" />
-            </a>
-            <a
-              href="https://discord.gg"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-[var(--accent)] hover:scale-110 transition-all"
-            >
-              <FaDiscord className="w-5 h-5" />
-            </a>
-          </div>
+      {/* Bottom Bar */}
+      <div className="border-t border-[var(--border)] py-3 sm:py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            {/* Social Icons - Mobile */}
+            <div className="flex md:hidden items-center gap-4">
+              <a
+                href="https://instagram.com/zynx.v1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[var(--accent)] hover:scale-110 transition-all"
+                aria-label="Instagram"
+              >
+                <FaInstagram className="w-4 h-4" />
+              </a>
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[var(--accent)] hover:scale-110 transition-all"
+                aria-label="Twitter"
+              >
+                <FaXTwitter className="w-4 h-4" />
+              </a>
+              <a
+                href="https://discord.gg"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[var(--accent)] hover:scale-110 transition-all"
+                aria-label="Discord"
+              >
+                <FaDiscord className="w-4 h-4" />
+              </a>
+              <a
+                href="https://youtube.com/@zynxanime"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[var(--accent)] hover:scale-110 transition-all"
+                aria-label="YouTube"
+              >
+                <FaYoutube className="w-4 h-4" />
+              </a>
+            </div>
 
-          {/* ❤️ Copyright */}
-          <p className="text-xs text-[var(--muted)] text-center sm:text-right">
-            Made with <FaHeart className="inline w-3 h-3 text-[var(--accent)] mx-1 animate-pulse" /> 
-            by <span className="text-[var(--accent)] font-medium">Zynx Innovations</span> © {new Date().getFullYear()}
-          </p>
+            {/* Copyright - Hidden on mobile when social shown, or shown on desktop */}
+            <p className="text-[10px] sm:text-xs text-center sm:text-left order-first sm:order-none">
+              Made with{" "}
+              <FaHeart className="inline w-3 h-3 text-[var(--accent)] mx-0.5 animate-pulse" />{" "}
+              by <span className="text-[var(--accent)] font-medium">Zynx Innovations</span>
+            </p>
+
+            <p className="text-[10px] sm:text-xs text-[var(--muted)]">
+              © {new Date().getFullYear()} All rights reserved
+            </p>
+          </div>
         </div>
       </div>
     </footer>
