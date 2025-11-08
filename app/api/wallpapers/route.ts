@@ -102,6 +102,84 @@ const luffyWallpapers = {
   ],
 };
 
+// ⚔️ Roronoa Zoro Wallpapers
+const zoroWallpapers = {
+  characterId: "202",
+  characterSlug: "roronoa-zoro",
+  list: [
+    {
+      id: "zoro-001",
+      slug: "zoro-santoryu-stance",
+      title: "Zoro Santoryu Stance",
+      url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762595280/zoro_gnel6f.jpg",
+      downloadUrl:
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762595280/zoro_gnel6f.jpg",
+      live: false,
+      tags: ["Zoro", "Santoryu", "One Piece", "Swordsman", "Anime", "4K"],
+    },
+    
+
+  ],
+};
+
+// 💋 Boa Hancock Wallpapers
+const boaHancockWallpapers = {
+  characterId: "203",
+  characterSlug: "boa-hancock",
+  list: [
+    {
+      id: "boa-001",
+      slug: "boa-hancock-empress-glare",
+      title: "Boa Hancock Empress Glare",
+      url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762612968/boa_ygelug.jpg",
+      downloadUrl:
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762612968/boa_ygelug.jpg",
+      live: false,
+      tags: ["Boa Hancock", "One Piece", "Empress", "Pirate Empress", "Anime", "4K"],
+    },
+    
+  ],
+};
+
+// ⚔️ Sung Jin-Woo Wallpapers
+const sungJinWooWallpapers = {
+  characterId: "1101",
+  characterSlug: "sung-jin-woo",
+  list: [
+    {
+      id: "jinwoo-001",
+      slug: "sung-jinwoo-shadow-monarch",
+      title: "Sung Jin-Woo Shadow Monarch",
+      url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762593839/zynx-anime/sooptr23alloix5qgb9g.jpg",
+      downloadUrl:
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762593839/zynx-anime/sooptr23alloix5qgb9g.jpg",
+      live: false,
+      tags: ["Sung Jin-Woo", "Shadow Monarch", "Solo Leveling", "Anime", "Wallpaper", "4K"],
+    },
+   
+  ],
+};
+
+
+// 🦸‍♂️ Izuku Midoriya Wallpaper
+const izukuMidoriyaWallpapers = {
+  characterId: "1001",
+  characterSlug: "izuku-midoriya",
+  list: [
+    {
+      id: "deku-001",
+      slug: "izuku-midoriya-one-for-all",
+      title: "Izuku Midoriya One For All",
+      url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762593655/zynx-anime/b5absj90ap6gaac7kcj6.jpg",
+      downloadUrl:
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762593655/zynx-anime/b5absj90ap6gaac7kcj6.jpg",
+      live: false,
+      tags: ["Izuku Midoriya", "Deku", "One For All", "My Hero Academia", "Anime", "4K"],
+    },
+  ],
+};
+
+
 // ⚡ Goku Wallpapers
 const gokuWallpapers = {
   characterId: "1201",
@@ -128,14 +206,144 @@ const gokuWallpapers = {
 
   ],
 };
+// ⚗️ Edward Elric Wallpaper
+const edwardElricWallpapers = {
+  characterId: "901",
+  characterSlug: "edward-elric",
+  list: [
+    {
+      id: "edward-001",
+      slug: "edward-elric-alchemy-circle",
+      title: "Edward Elric Alchemy Circle",
+      url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762584959/zynx-anime/w3g6n9obbape6bogwrku.jpg",
+      downloadUrl:
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762584959/zynx-anime/w3g6n9obbape6bogwrku.jpg",
+      live: false,
+      tags: ["Edward Elric", "Fullmetal Alchemist", "Alchemy", "Anime", "Wallpaper", "4K"],
+    },
+  ],
+};
 
+// 💥 Saitama Wallpaper
+const saitamaWallpapers = {
+  characterId: "701",
+  characterSlug: "saitama",
+  list: [
+    {
+      id: "saitama-001",
+      slug: "saitama-one-punch",
+      title: "Saitama One Punch",
+      url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762584809/zynx-anime/psoxwjwfhlmcahlq2tjx.jpg",
+      downloadUrl:
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762584809/zynx-anime/psoxwjwfhlmcahlq2tjx.jpg",
+      live: false,
+      tags: ["Saitama", "One Punch Man", "Hero", "Anime", "Wallpaper", "4K"],
+    },
+  ],
+};
+
+// ☕ L Lawliet Wallpaper
+const lLawlietWallpapers = {
+  characterId: "801",
+  characterSlug: "l-lawliet",
+  list: [
+    {
+      id: "l-001",
+      slug: "l-lawliet-detective-mind",
+      title: "L Lawliet Detective Mind",
+      url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762593535/zynx-anime/bdetgyzqkwrwuxejw1t8.jpg",
+      downloadUrl:
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762593535/zynx-anime/bdetgyzqkwrwuxejw1t8.jpg",
+      live: false,
+      tags: ["L Lawliet", "Death Note", "Detective", "Anime", "Wallpaper", "4K"],
+    },
+  ],
+};
+// 🔥 Eren Yeager Wallpaper
+const erenYeagerWallpapers = {
+  characterId: "401",
+  characterSlug: "eren-yeager",
+  list: [
+    {
+      id: "eren-001",
+      slug: "eren-yeager-rage-titan",
+      title: "Eren Yeager Rage Titan",
+      url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762584301/zynx-anime/naruto/aybnqy8qlvchludpogxc.jpg",
+      downloadUrl:
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762584301/zynx-anime/naruto/aybnqy8qlvchludpogxc.jpg",
+      live: false,
+      tags: ["Eren Yeager", "Attack on Titan", "Titan", "Anime", "Wallpaper", "4K"],
+    },
+  ],
+};
+
+// 💫 Satoru Gojo Wallpaper
+const gojoWallpapers = {
+  characterId: "601",
+  characterSlug: "satoru-gojo",
+  list: [
+    {
+      id: "gojo-001",
+      slug: "satoru-gojo-limitless-domain",
+      title: "Satoru Gojo Limitless Domain",
+      url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762584742/zynx-anime/eoxrwnrwrdrshdefsvws.jpg",
+      downloadUrl:
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762584742/zynx-anime/eoxrwnrwrdrshdefsvws.jpg",
+      live: false,
+      tags: [
+        "Satoru Gojo",
+        "Jujutsu Kaisen",
+        "Limitless",
+        "Hollow Purple",
+        "Anime",
+        "4K",
+      ],
+    },
+  ],
+};
+
+// 🔥 Tanjiro Kamado Wallpaper
+const tanjiroWallpapers = {
+  characterId: "501",
+  characterSlug: "tanjiro-kamado",
+  list: [
+    {
+      id: "tanjiro-001",
+      slug: "tanjiro-water-breathing",
+      title: "Tanjiro Water Breathing",
+      url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762613786/Tanjiro_Kamado_jxatz6.jpg",
+      downloadUrl:
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762613786/Tanjiro_Kamado_jxatz6.jpg",
+      live: false,
+      tags: [
+        "Tanjiro Kamado",
+        "Demon Slayer",
+        "Water Breathing",
+        "Nichirin Sword",
+        "Anime",
+        "4K",
+      ],
+    },
+  ],
+};
 
 // 🧩 Combine All Characters
 const wallpapers = [
+  gojoWallpapers,
   narutoWallpapers,
   itachiWallpapers,
   kakashiWallpapers,
+tanjiroWallpapers,
   luffyWallpapers,
+  zoroWallpapers,
+  boaHancockWallpapers,
+erenYeagerWallpapers,
+  lLawlietWallpapers,
+
+  sungJinWooWallpapers,
+edwardElricWallpapers,
+  izukuMidoriyaWallpapers,
+saitamaWallpapers,
   gokuWallpapers
 ];
 

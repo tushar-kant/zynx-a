@@ -56,7 +56,7 @@ const onePieceCharacters = [
     description:
       "The Pirate Empress of Amazon Lily and one of the Seven Warlords of the Sea, known for her beauty and strength.",
     image:
-      "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762538098/zynx-anime/pmptes9hx3ehsxocnqir.jpg",
+      "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762612968/boa_ygelug.jpg",
   },
 ];
 
@@ -92,7 +92,7 @@ const demonSlayerCharacters = [
     name: "Tanjiro Kamado",
     description: "A kind-hearted demon slayer on a quest to save his sister Nezuko.",
     image:
-      "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762537348/zynx-anime/b3oddwrpknooa97cl8cm.jpg",
+      "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762613786/Tanjiro_Kamado_jxatz6.jpg",
   },
 ];
 
@@ -100,8 +100,8 @@ const demonSlayerCharacters = [
 const jujutsuKaisenCharacters = [
   {
     id: "601",
-    slug: "yuji-itadori",
-    name: "Yuji Itadori",
+    slug: "satoru-gojo",
+    name: "Satoru Gojo",
     description: "A brave student who becomes host to the powerful Sukuna.",
     image:
       "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762584742/zynx-anime/eoxrwnrwrdrshdefsvws.jpg",
@@ -124,8 +124,8 @@ const onePunchManCharacters = [
 const deathNoteCharacters = [
   {
     id: "801",
-    slug: "light-yagami",
-    name: "Light Yagami",
+    slug: "l-lawliet",
+    name: "L Lawliet",
     description: "A genius student who discovers the deadly Death Note.",
     image:
       "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762593535/zynx-anime/bdetgyzqkwrwuxejw1t8.jpg",
@@ -167,6 +167,9 @@ const soloLevelingCharacters = [
       "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762593839/zynx-anime/sooptr23alloix5qgb9g.jpg",
   },
 ];
+
+
+
 
 // 🐉 Dragon Ball
 const dragonBallCharacters = [
