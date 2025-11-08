@@ -74,19 +74,48 @@ export default function WallpaperPreviewPage() {
     }
   };
 
-  const handleDownload = (size: string) => {
-    setShowModal(false);
+const handleDownload = async (size: string) => {
+  if (!wallpaper?.downloadUrl) return;
 
-    const sizeMap: Record<string, string> = {
-      pc: `${wallpaper?.downloadUrl}?size=4k`,
-      pfp: `${wallpaper?.downloadUrl}?size=pfp`,
-      wallpaper: `${wallpaper?.downloadUrl}?size=1080p`,
-      phone: `${wallpaper?.downloadUrl}?size=mobile`,
-    };
+  setShowModal(false);
 
-    const url = sizeMap[size];
-    if (url) window.open(url, "_blank");
+  // Choose the right size URL (customizable if you have transformations)
+  const sizeMap: Record<string, string> = {
+    pc: `${wallpaper.downloadUrl}`, // or `${wallpaper.downloadUrl}?size=4k`
+    pfp: `${wallpaper.downloadUrl}`, // e.g. use Cloudinary transform for smaller crop
+    wallpaper: `${wallpaper.downloadUrl}`,
+    phone: `${wallpaper.downloadUrl}`,
   };
+
+  const url = sizeMap[size];
+  if (!url) return;
+
+  try {
+    // Fetch the image as a blob
+    const res = await fetch(url);
+    const blob = await res.blob();
+
+    // Create a temporary download link
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+
+    // Set filename dynamically (optional)
+    const extension = blob.type.split("/")[1] || "jpg";
+    link.download = `${wallpaper.title.replace(/\s+/g, "_")}_${size}.${extension}`;
+
+    // Trigger the download
+    document.body.appendChild(link);
+    link.click();
+
+    // Cleanup
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+  } catch (err) {
+    console.error("Download failed:", err);
+    alert("Failed to download wallpaper. Please try again.");
+  }
+};
+
 
   if (loading) {
     return (

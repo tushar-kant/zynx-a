@@ -72,18 +72,46 @@ export default function LiveWallpaperPreviewPage() {
     }
   };
 
-  const handleDownload = (size: string) => {
-    setShowModal(false);
+const handleDownload = async (size: string) => {
+  if (!wallpaper?.downloadUrl) return;
 
-    const sizeMap: Record<string, string> = {
-      pc: `${wallpaper?.downloadUrl}?type=video_4k`,
-      wallpaper: `${wallpaper?.downloadUrl}?type=video_hd`,
-      phone: `${wallpaper?.downloadUrl}?type=video_mobile`,
-    };
+  setShowModal(false);
 
-    const url = sizeMap[size];
-    if (url) window.open(url, "_blank");
+  // Map download URLs per video size (you can customize for Cloudinary transformations)
+  const sizeMap: Record<string, string> = {
+    pc: `${wallpaper.downloadUrl}?type=video_4k`,
+    wallpaper: `${wallpaper.downloadUrl}?type=video_hd`,
+    phone: `${wallpaper.downloadUrl}?type=video_mobile`,
   };
+
+  const url = sizeMap[size];
+  if (!url) return;
+
+  try {
+    // Fetch the video blob
+    const res = await fetch(url);
+    const blob = await res.blob();
+
+    // Create a temporary object URL for the blob
+    const downloadUrl = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+
+    // Generate a nice filename based on title + size
+    const extension = blob.type.split("/")[1] || "mp4";
+    link.download = `${wallpaper.title.replace(/\s+/g, "_")}_${size}.${extension}`;
+
+    // Append, click, and clean up
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(downloadUrl);
+  } catch (err) {
+    console.error("Video download failed:", err);
+    alert("Failed to download video wallpaper. Please try again.");
+  }
+};
+
 
   if (loading)
     return (
