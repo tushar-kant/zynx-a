@@ -1,64 +1,9 @@
 import { NextResponse } from "next/server";
 
-// 🌀 Naruto
-const narutoCharacters = [
-  {
-    id: "101",
-    slug: "naruto-uzumaki",
-    name: "Naruto Uzumaki",
-    description: "The ninja who dreams of becoming Hokage and never gives up.",
-    image:
-      "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762580149/zynx-anime/naruto/sb8w6dd18yll3lrwm7hu.jpg",
-  },
-  {
-    id: "102",
-    slug: "itachi-uchiha",
-    name: "Itachi Uchiha",
-    description:
-      "A prodigy of the Uchiha clan, known for his calm demeanor, mastery of the Sharingan, and tragic sacrifice for peace.",
-    image:
-      "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762594600/itachi-saringan-uchiha_xtpvcq.jpg",
-  },
-  {
-  id: "103",
-  slug: "kakashi-hatake",
-  name: "Kakashi Hatake",
-  description:
-    "The Copy Ninja of Konoha, a calm and analytical shinobi known for his Sharingan and leadership of Team 7.",
-  image:
-    "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762538047/zynx-anime/u4muofyw343l4nhw7nof.jpg",
-},
-];
 
-// 🏴‍☠️ One Piece
-const onePieceCharacters = [
-  {
-    id: "201",
-    slug: "monkey-d-luffy",
-    name: "Monkey D. Luffy",
-    description: "The rubber pirate captain who aims to become the Pirate King.",
-    image:
-      "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762538098/zynx-anime/pmptes9hx3ehsxocnqir.jpg",
-  },
-   {
-    id: "202",
-    slug: "roronoa-zoro",
-    name: "Roronoa Zoro",
-    description:
-      "The swordsman of the Straw Hat Pirates who dreams of becoming the world’s greatest swordsman.",
-    image:
-      "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762595280/zoro_gnel6f.jpg",
-  },
-  {
-    id: "203",
-    slug: "boa-hancock",
-    name: "Boa Hancock",
-    description:
-      "The Pirate Empress of Amazon Lily and one of the Seven Warlords of the Sea, known for her beauty and strength.",
-    image:
-      "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762612968/boa_ygelug.jpg",
-  },
-];
+import { narutoCharacters } from "./data/naruto";
+import { onePieceCharacters } from "./data/one-piece";
+
 
 // ⚔️ Bleach
 const bleachCharacters = [

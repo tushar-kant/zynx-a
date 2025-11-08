@@ -8,20 +8,20 @@ const socialLinks = [
   {
     name: "Twitter",
     icon: FaXTwitter,
-    url: "https://twitter.com/",
+    url: "https://www.instagram.com/zynx.v1/",
     color: "hover:bg-black hover:text-white",
   },
   {
     name: "Instagram",
     icon: FaInstagram,
-    url: "https://instagram.com/",
+    url: "https://www.instagram.com/zynx.v1/",
     color: "hover:bg-gradient-to-br hover:from-purple-600 hover:to-pink-500 hover:text-white",
   },
 
   {
     name: "YouTube",
     icon: FaYoutube,
-    url: "https://youtube.com/",
+    url: "https://www.instagram.com/zynx.v1/",
     color: "hover:bg-red-600 hover:text-white",
   },
 ];
@@ -111,7 +111,7 @@ export default function SocialFloat() {
 
         {/* Ko-fi Support Button */}
         <Link
-          href="https://ko-fi.com/yourname"
+          href="https://ko-fi.com/zynxv1"
           target="_blank"
           rel="noopener noreferrer"
           className="w-12 h-12 rounded-full bg-[var(--card)] border border-[var(--border)] flex items-center justify-center text-lg transition-all duration-300 shadow-lg hover:scale-110 hover:shadow-xl hover:bg-pink-600 hover:text-white"
