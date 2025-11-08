@@ -98,8 +98,13 @@ export default function HeroSection() {
 
       {/* 🖋 Title */}
       <div className="relative -translate-y-12">
-        <h1 className="text-6xl md:text-8xl font-extrabold mb-6 text-[var(--accent)] tracking-tight drop-shadow-lg">
-          Zynx <span className="text-[var(--foreground)]">Anime</span>
+        <h1 className="text-6xl md:text-8xl font-extrabold mb-6 tracking-tight drop-shadow-lg">
+          <span className="text-[var(--accent)]">Zy</span>
+          <span className="text-[var(--foreground)] relative inline-block">
+            nx
+            <span className="absolute bottom-0 left-0 w-full h-1 bg-[var(--accent)] animate-underline-repeat"></span>
+          </span>
+          <span className="text-[var(--foreground)]"> Anime</span>
         </h1>
         <p className="text-[var(--muted)] text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
           Explore breathtaking{" "}
@@ -233,10 +238,17 @@ export default function HeroSection() {
           100% { transform: rotate(360deg); }
         }
 
+        @keyframes underline-repeat {
+          0%, 100% { width: 0; left: 0; opacity: 1; }
+          50% { width: 100%; left: 0; opacity: 1; }
+          51% { width: 100%; left: 0; opacity: 0; }
+        }
+
         .animate-float { animation: float 20s ease-in-out infinite; }
         .animate-float-delayed { animation: float-delayed 25s ease-in-out infinite; }
         .animate-pulse-slow { animation: pulse-slow 15s ease-in-out infinite; }
         .animate-gradient { animation: gradient 30s linear infinite; }
+        .animate-underline-repeat { animation: underline-repeat 2s ease-in-out infinite; }
         .animate-fadeIn {
           animation: fadeIn 0.3s ease-out;
         }
