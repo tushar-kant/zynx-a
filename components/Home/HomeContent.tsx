@@ -11,28 +11,28 @@ export default function HomeContent() {
       title: "Naruto Uzumaki",
       anime: "Naruto",
       downloads: "2.4K",
-      cover: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762580149/zynx-anime/naruto/sb8w6dd18yll3lrwm7hu.jpg",
+      cover: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668145/gr_pgkvkr.jpg",
     },
     {
       id: 2,
       title: "Luffy Gear Fifth",
       anime: "One Piece",
       downloads: "3.1K",
-      cover: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762538098/zynx-anime/pmptes9hx3ehsxocnqir.jpg",
+      cover: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668204/sgeg_ciahdp.jpg",
     },
     {
       id: 3,
       title: "Muzen",
       anime: "Demon slayer",
       downloads: "2.8K",
-      cover: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762537348/zynx-anime/b3oddwrpknooa97cl8cm.jpg",
+      cover: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668045/b3oddwrpknooa97cl8cm_y9lo5n.jpg",
     },
     {
       id: 4,
       title: "kakashi",
       anime: "Naruto",
       downloads: "2.2K",
-      cover: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762538047/zynx-anime/u4muofyw343l4nhw7nof.jpg",
+      cover: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668136/u4muofyw343l4nhw7nof_zzcbzk.jpg",
     },
   ];
 

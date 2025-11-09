@@ -6,9 +6,9 @@ export const erenYeagerWallpapers = {
       id: "eren-001",
       slug: "eren-yeager-rage-titan",
       title: "Eren Yeager Rage Titan",
-      url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762584301/zynx-anime/naruto/aybnqy8qlvchludpogxc.jpg",
+      url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762667880/fwefwf_lar33i.jpg",
       downloadUrl:
-        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762584301/zynx-anime/naruto/aybnqy8qlvchludpogxc.jpg",
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762667880/fwefwf_lar33i.jpg",
       live: false,
       tags: ["Eren Yeager", "Attack on Titan", "Titan", "Anime", "Wallpaper", "4K"],
     },

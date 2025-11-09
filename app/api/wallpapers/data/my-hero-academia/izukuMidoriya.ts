@@ -6,9 +6,9 @@ export const izukuMidoriyaWallpapers = {
       id: "deku-001",
       slug: "izuku-midoriya-one-for-all",
       title: "Izuku Midoriya One For All",
-      url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762593655/zynx-anime/b5absj90ap6gaac7kcj6.jpg",
+      url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668115/b5absj90ap6gaac7kcj6_innopq.jpg",
       downloadUrl:
-        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762593655/zynx-anime/b5absj90ap6gaac7kcj6.jpg",
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668115/b5absj90ap6gaac7kcj6_innopq.jpg",
       live: false,
       tags: ["Izuku Midoriya", "Deku", "One For All", "My Hero Academia", "Anime", "4K"],
     },

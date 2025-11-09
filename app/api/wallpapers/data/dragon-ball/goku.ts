@@ -6,9 +6,9 @@ export const gokuWallpapers = {
       id: "goku-001",
       slug: "goku-ultra-instinct",
       title: "Goku Ultra Instinct",
-      url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762593722/zynx-anime/q9off5ji03mzvrnh79be.jpg",
+      url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668076/q9off5ji03mzvrnh79be_x4lqvg.jpg",
       downloadUrl:
-        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762593722/zynx-anime/q9off5ji03mzvrnh79be.jpg",
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668076/q9off5ji03mzvrnh79be_x4lqvg.jpg",
       live: false,
       tags: [
         "Goku",
