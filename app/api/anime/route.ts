@@ -108,7 +108,7 @@ export async function GET(req: Request) {
       description:
         "Goku and his friends embark on thrilling adventures to find the Dragon Balls and defend Earth from powerful foes.",
       cover:
-        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762593722/zynx-anime/q9off5ji03mzvrnh79be.jpg",
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668076/q9off5ji03mzvrnh79be_x4lqvg.jpg",
     },
   ];
 
