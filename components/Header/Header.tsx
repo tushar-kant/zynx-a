@@ -75,9 +75,9 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex space-x-6 text-[var(--muted)]">
-            <Link href="/" className="hover:text-[var(--foreground)] transition">
+            {/* <Link href="/" className="hover:text-[var(--foreground)] transition">
               Home
-            </Link>
+            </Link> */}
 
             <Link
               href="/anime"
@@ -114,7 +114,7 @@ export default function Header() {
         >
           <nav className="flex flex-col px-6 py-4 space-y-4 text-[var(--muted)]">
             {[
-              { href: "/", label: "Home" },
+              // { href: "/", label: "Home" },
               { href: "/anime-live", label: "Live anime" },
               { href: "/anime", label: "Anime" },
             ].map(({ href, label }) => (

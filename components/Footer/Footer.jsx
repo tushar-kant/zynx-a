@@ -87,15 +87,7 @@ export default function Footer() {
               >
                 <FaXTwitter className="w-4 h-4" />
               </a>
-              <a
-                href="https://www.instagram.com/zynx.v1/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-[var(--accent)] hover:scale-110 transition-all"
-                aria-label="Discord"
-              >
-                <FaDiscord className="w-4 h-4" />
-              </a>
+          
               <a
                 href="https://www.instagram.com/zynx.v1/"
                 target="_blank"
@@ -134,15 +126,7 @@ export default function Footer() {
               >
                 <FaXTwitter className="w-4 h-4" />
               </a>
-              <a
-                href="https://www.instagram.com/zynx.v1/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-[var(--accent)] hover:scale-110 transition-all"
-                aria-label="Discord"
-              >
-                <FaDiscord className="w-4 h-4" />
-              </a>
+            
               <a
                 href="https://www.instagram.com/zynx.v1/"
                 target="_blank"
