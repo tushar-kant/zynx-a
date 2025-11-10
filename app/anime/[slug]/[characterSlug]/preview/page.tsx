@@ -108,14 +108,14 @@ export default function WallpaperPreviewPage() {
   // 🔹 Helper — check if URL is a video
   const isVideoUrl = (url: string) => /\.(mp4|webm|mov|m4v)$/i.test(url);
 
-  if (loading) {
-    return (
-      <main className="min-h-screen flex flex-col items-center justify-center gap-4 px-4">
-        <div className="w-12 h-12 border-4 border-[var(--accent)] border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-[var(--muted)] text-sm">Loading wallpaper...</p>
-      </main>
-    );
-  }
+if (loading) {
+  return (
+    <main className="min-h-screen flex flex-col items-center justify-center gap-4 px-4">
+      <div className="w-12 h-12 border-4 border-[var(--accent)] border-t-transparent rounded-full animate-spin"></div>
+    </main>
+  );
+}
+
 
   if (error || !wallpaper) {
     return (
