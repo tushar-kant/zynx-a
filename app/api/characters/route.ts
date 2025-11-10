@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 
-
 import { narutoCharacters } from "./data/naruto";
 import { onePieceCharacters } from "./data/one-piece";
 import { attackOnTitanCharacters } from "./data/aot";
@@ -14,8 +13,7 @@ import { fullmetalAlchemistCharacters } from "./data/fullmetalalchemist";
 import { dragonBallCharacters } from "./data/dragonballl";
 import { deathNoteCharacters } from "./data/deathnote";
 
-
-// 🧩 Combine into one object
+// 🧩 Combine all into a single lookup object
 const characters = {
   "naruto": narutoCharacters,
   "one-piece": onePieceCharacters,
@@ -31,12 +29,15 @@ const characters = {
   "dragon-ball": dragonBallCharacters,
 };
 
-// ✅ API route
+// ✅ API route with optional pagination
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const animeSlug = searchParams.get("animeSlug");
-
   try {
+    const { searchParams } = new URL(request.url);
+    const animeSlug = searchParams.get("animeSlug");
+    const pageParam = searchParams.get("page");
+    const limitParam = searchParams.get("limit");
+
+    // 🧠 Validate input
     if (!animeSlug) {
       return NextResponse.json(
         { success: false, message: "Missing animeSlug parameter." },
@@ -53,10 +54,30 @@ export async function GET(request: Request) {
       );
     }
 
+    // ⚙️ Pagination logic (optional)
+    if (!pageParam && !limitParam) {
+      return NextResponse.json({
+        success: true,
+        total: result.length,
+        data: result,
+      });
+    }
+
+    const page = parseInt(pageParam || "1", 10);
+    const limit = parseInt(limitParam || "10", 10);
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    const paginated = result.slice(start, end);
+    const hasMore = end < result.length;
+
     return NextResponse.json({
       success: true,
+      anime: animeSlug,
       total: result.length,
-      data: result,
+      page,
+      limit,
+      hasMore,
+      data: paginated,
     });
   } catch (error) {
     console.error("Error in /api/characters:", error);
