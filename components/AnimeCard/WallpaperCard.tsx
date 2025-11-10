@@ -33,7 +33,7 @@ export default function WallpaperCard({
 
   // ✅ Dynamic route depending on "live"
   const previewPath = live
-    ? `/anime-live/${animeSlug}/${characterSlug}/preview`
+    ? `/anime/${animeSlug}/${characterSlug}/preview`
     : `/anime/${animeSlug}/${characterSlug}/preview`;
 
   return (
