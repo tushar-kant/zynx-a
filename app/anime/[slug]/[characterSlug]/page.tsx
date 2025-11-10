@@ -19,7 +19,6 @@ const LIMIT = 8;
 function CharacterWallpapersPage() {
   const params = useParams();
   const router = useRouter();
-  const slug = params.slug as string;
   const characterSlug = params.characterSlug as string;
 
   const [wallpapers, setWallpapers] = useState<Wallpaper[]>([]);
@@ -35,7 +34,7 @@ function CharacterWallpapersPage() {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const loaderRef = useRef<HTMLDivElement>(null);
-  const initialLoad = useRef(false); // ⛔ prevent duplicate first fetch (StrictMode)
+  const initialLoad = useRef(false);
 
   // ✅ Fetch wallpapers with pagination
   const fetchWallpapers = useCallback(
@@ -52,7 +51,6 @@ function CharacterWallpapersPage() {
           if (data.data.length === 0) {
             setHasMore(false);
           } else {
-            // ✅ Deduplicate wallpapers
             setWallpapers((prev) => {
               const all = [...prev, ...data.data];
               return all.filter(
@@ -60,7 +58,6 @@ function CharacterWallpapersPage() {
                   index === self.findIndex((w) => w.id === item.id)
               );
             });
-
             setFilteredWallpapers((prev) => {
               const all = [...prev, ...data.data];
               return all.filter(
@@ -83,17 +80,12 @@ function CharacterWallpapersPage() {
     [characterSlug, liveOnly]
   );
 
-  // 🔹 Initial fetch (guarded)
+  // 🔹 Initial fetch
   useEffect(() => {
     if (initialLoad.current) return;
     initialLoad.current = true;
-
-    setWallpapers([]);
-    setFilteredWallpapers([]);
-    setPage(1);
-    setHasMore(true);
     fetchWallpapers(1);
-  }, [fetchWallpapers, characterSlug, liveOnly]);
+  }, [fetchWallpapers]);
 
   // 🔹 Reset and refetch when live/static toggled
   useEffect(() => {
@@ -108,6 +100,7 @@ function CharacterWallpapersPage() {
   // 🔹 Infinite scroll
   useEffect(() => {
     if (!hasMore || loadingMore) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) setPage((prev) => prev + 1);
@@ -117,10 +110,14 @@ function CharacterWallpapersPage() {
 
     const loader = loaderRef.current;
     if (loader) observer.observe(loader);
+
+    // ✅ Always return a cleanup function (never undefined or null)
     return () => {
       if (loader) observer.unobserve(loader);
+      observer.disconnect(); // good practice to fully clean up
     };
   }, [hasMore, loadingMore]);
+
 
   // 🔹 Load next page
   useEffect(() => {
@@ -169,9 +166,8 @@ function CharacterWallpapersPage() {
             {/* 🔍 Search */}
             <div className="flex items-center gap-2 relative">
               <div
-                className={`transition-all duration-300 overflow-hidden ${
-                  searchOpen ? "w-40 sm:w-60 opacity-100" : "w-0 opacity-0"
-                }`}
+                className={`transition-all duration-300 overflow-hidden ${searchOpen ? "w-40 sm:w-60 opacity-100" : "w-0 opacity-0"
+                  }`}
               >
                 <input
                   ref={inputRef}
@@ -192,14 +188,14 @@ function CharacterWallpapersPage() {
             </div>
           </div>
 
-          {/* Title + Live Filter */}
+          {/* Title + Toggle */}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h1 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-[var(--accent)] leading-tight">
                 {characterName}
               </h1>
 
-              {!loading && !error && filteredWallpapers.length > 0 && (
+              {!loading && !error && filteredWallpapers.length >= 0 && (
                 <div className="flex items-center gap-2 mt-2 px-3 py-1.5 bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-full text-xs sm:text-sm text-[var(--accent)] font-medium">
                   <FaImages className="w-3 h-3" />
                   <span>
@@ -208,26 +204,44 @@ function CharacterWallpapersPage() {
                   </span>
                 </div>
               )}
+
             </div>
 
-            {/* 🟢 Live Filter */}
-            <button
-              onClick={() => setLiveOnly((prev) => !prev)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all duration-200 ${
-                liveOnly
-                  ? "bg-[var(--accent)] text-white border-[var(--accent)]"
-                  : "border-[var(--border)] hover:bg-[var(--accent)] hover:text-white"
-              }`}
-            >
-              {liveOnly ? "Show Static Wallpapers" : "Show Live Wallpapers"}
-            </button>
+            {/* 🟢 Live/Static Toggle */}
+            <div className="flex items-center gap-3">
+              <span
+                className={`text-sm font-medium ${!liveOnly ? "text-[var(--accent)]" : "text-[var(--muted)]"
+                  }`}
+              >
+                
+              </span>
+
+              {/* Toggle Switch */}
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={liveOnly}
+                  onChange={() => setLiveOnly((prev) => !prev)}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-[var(--border)] peer-focus:outline-none rounded-full peer peer-checked:bg-[var(--accent)] relative transition-all duration-300">
+                  <div className="absolute top-0.5 left-[2px] bg-white h-5 w-5 rounded-full transition-all duration-300 peer-checked:translate-x-[22px]" />
+                </div>
+              </label>
+
+              <span
+                className={`text-sm font-medium ${liveOnly ? "text-[var(--accent)]" : "text-[var(--muted)]"
+                  }`}
+              >
+                Live
+              </span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* ✅ Main Section */}
       <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 py-8 sm:py-12 md:py-16">
-        {/* 🌀 Skeletons */}
         {loading && wallpapers.length === 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {Array.from({ length: 8 }).map((_, i) => (
@@ -240,12 +254,6 @@ function CharacterWallpapersPage() {
           <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 text-center px-4">
             <div className="text-6xl sm:text-8xl opacity-20">🎨</div>
             <p className="text-[var(--muted)] text-base sm:text-lg">{error}</p>
-            <button
-              onClick={() => router.back()}
-              className="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-[var(--accent)] text-white rounded-lg text-sm sm:text-base font-medium hover:opacity-90 transition-all active:scale-95"
-            >
-              <FaArrowLeft className="w-3 h-3" /> Go Back
-            </button>
           </div>
         ) : filteredWallpapers.length === 0 ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 text-center px-4">

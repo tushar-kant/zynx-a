@@ -31,6 +31,7 @@ function AnimeCharactersPage() {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const loaderRef = useRef<HTMLDivElement>(null);
+  const initialLoad = useRef(false); // 👈 Prevents double fetching in dev (React Strict Mode)
 
   // ✅ Fetch paginated characters
   const fetchCharacters = useCallback(
@@ -44,17 +45,26 @@ function AnimeCharactersPage() {
         const data = await res.json();
 
         if (data.success) {
-          if (Array.isArray(data.data)) {
-            if (data.data.length === 0) {
-              setHasMore(false);
-            } else {
-              setCharacters((prev) => [...prev, ...data.data]);
-              setFilteredCharacters((prev) => [...prev, ...data.data]);
-            }
-          } else {
-            setCharacters(data.data || []);
-            setFilteredCharacters(data.data || []);
+          const fetched = Array.isArray(data.data) ? data.data : [];
+          if (fetched.length === 0) {
             setHasMore(false);
+          } else {
+            // ✅ Deduplicate by ID
+            setCharacters((prev) => {
+              const all = [...prev, ...fetched];
+              return all.filter(
+                (item, index, self) =>
+                  index === self.findIndex((c) => c.id === item.id)
+              );
+            });
+
+            setFilteredCharacters((prev) => {
+              const all = [...prev, ...fetched];
+              return all.filter(
+                (item, index, self) =>
+                  index === self.findIndex((c) => c.id === item.id)
+              );
+            });
           }
         } else {
           setError(data.message || "No characters found for this anime.");
@@ -70,24 +80,30 @@ function AnimeCharactersPage() {
     [slug]
   );
 
-  // 🔹 Initial fetch
+  // 🔹 Initial fetch (guarded for StrictMode)
   useEffect(() => {
+    if (initialLoad.current) return;
+    initialLoad.current = true;
     fetchCharacters(1);
   }, [fetchCharacters]);
 
-  // 🔹 Infinite scroll
+  // 🔹 Infinite scroll observer
   useEffect(() => {
     if (!hasMore || loadingMore) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) setPage((prev) => prev + 1);
       },
       { threshold: 1 }
     );
-    const currentLoader = loaderRef.current;
-    if (currentLoader) observer.observe(currentLoader);
+
+    const loader = loaderRef.current;
+    if (loader) observer.observe(loader);
+
     return () => {
-      if (currentLoader) observer.unobserve(currentLoader);
+      if (loader) observer.unobserve(loader);
+      observer.disconnect();
     };
   }, [hasMore, loadingMore]);
 
@@ -133,6 +149,7 @@ function AnimeCharactersPage() {
             <span className="font-medium hidden xs:inline">Back</span>
           </button>
 
+          {/* 🔍 Search Box */}
           <div className="flex items-center gap-2 relative">
             <div
               className={`transition-all duration-300 overflow-hidden ${
@@ -157,10 +174,19 @@ function AnimeCharactersPage() {
           </div>
         </div>
 
+        {/* Title */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 pb-4">
           <h1 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-[var(--accent)] leading-tight text-left">
             {animeTitle}
           </h1>
+
+          {/* Show character count (even if 0) */}
+          {!loading && !error && (
+            <div className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-full text-xs sm:text-sm text-[var(--accent)] font-medium">
+              👥 {filteredCharacters.length}{" "}
+              {filteredCharacters.length === 1 ? "Character" : "Characters"}
+            </div>
+          )}
         </div>
       </div>
 
@@ -203,6 +229,7 @@ function AnimeCharactersPage() {
           </div>
         ) : (
           <>
+            {/* ✅ Characters Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-fr">
               {filteredCharacters.map((char) => (
                 <CharacterCard
