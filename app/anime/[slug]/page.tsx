@@ -196,8 +196,12 @@ function AnimeCharactersPage() {
         {loading && characters.length === 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="h-64 rounded-xl bg-[var(--card)] overflow-hidden relative">
-                <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-[var(--muted)]/20 via-[var(--muted)]/40 to-[var(--muted)]/20"></div>
+             <div
+                key={i}
+                className="relative h-64 sm:h-72 md:h-80 rounded-xl bg-[var(--card)] overflow-hidden border border-[var(--border)]"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-[var(--muted)]/10 via-[var(--muted)]/30 to-[var(--muted)]/10 animate-[shimmer_1.6s_infinite_linear]" />
+                <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-[var(--background)]/80 to-transparent" />
               </div>
             ))}
           </div>
