@@ -206,34 +206,31 @@ function CharacterWallpapersPage() {
             </div>
 
             {/* 🟢 Live/Static Toggle */}
-            <div className="flex items-center gap-3">
-              <span
-                className={`text-sm font-medium ${!liveOnly ? "text-[var(--accent)]" : "text-[var(--muted)]"
-                  }`}
-              >
-                
-              </span>
+       {/* 🟢 Live/Static Toggle — Simple CSS button (recommended) */}
+<div className="flex items-center gap-3">
+  <span className={`text-sm font-medium transition-colors ${!liveOnly ? "text-[var(--accent)]" : "text-[var(--muted)]"}`}>
+    
+  </span>
 
-              {/* Toggle Switch */}
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={liveOnly}
-                  onChange={() => setLiveOnly((prev) => !prev)}
-                  className="sr-only peer"
-                />
-                <div className="w-11 h-6 bg-[var(--border)] peer-focus:outline-none rounded-full peer peer-checked:bg-[var(--accent)] relative transition-all duration-300">
-                  <div className="absolute top-0.5 left-[2px] bg-white h-5 w-5 rounded-full transition-all duration-300 peer-checked:translate-x-[22px]" />
-                </div>
-              </label>
+  <button
+    onClick={() => setLiveOnly((p) => !p)}
+    aria-pressed={liveOnly}
+    className={`relative w-12 h-6 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/40 ${liveOnly ? "bg-[var(--accent)]" : "bg-[var(--border)]"}`}
+    title={liveOnly ? "Showing Live wallpapers" : "Showing Static wallpapers"}
+  >
+    <span
+      className="absolute top-[2px] left-[2px] h-5 w-5 rounded-full bg-white shadow-md transition-transform duration-200"
+      style={{ transform: liveOnly ? "translateX(24px)" : "translateX(0px)" }}
+    />
+  </button>
 
-              <span
-                className={`text-sm font-medium ${liveOnly ? "text-[var(--accent)]" : "text-[var(--muted)]"
-                  }`}
-              >
-                Live
-              </span>
-            </div>
+  <span className={`text-sm font-medium transition-colors ${liveOnly ? "text-[var(--accent)]" : "text-[var(--muted)]"}`}>
+    Live
+  </span>
+</div>
+
+
+
           </div>
         </div>
       </div>

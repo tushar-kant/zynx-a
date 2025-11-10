@@ -161,7 +161,11 @@ function AnimePage() {
               className="p-2 rounded-md border border-[var(--border)] hover:bg-[var(--accent)] hover:text-white transition-all duration-200"
               title={searchOpen ? "Close Search" : "Search"}
             >
-              {searchOpen ? <FaTimes className="w-4 h-4" /> : <FaSearch className="w-4 h-4" />}
+              {searchOpen ? (
+                <FaTimes className="w-4 h-4" />
+              ) : (
+                <FaSearch className="w-4 h-4" />
+              )}
             </button>
           </div>
         </div>
@@ -179,12 +183,18 @@ function AnimePage() {
 
       {/* ✅ Anime Grid */}
       <section className="w-full max-w-7xl mx-auto px-4 xs:px-5 sm:px-6 md:px-8 lg:px-10 py-8 sm:py-12 md:py-16">
+        {/* 🌀 Skeleton Loader */}
         {loading && animeList.length === 0 ? (
-          <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4">
-            <div className="w-12 h-12 border-4 border-[var(--accent)] border-t-transparent rounded-full animate-spin" />
-            <p className="text-[var(--muted)] text-sm sm:text-base">
-              Loading anime...
-            </p>
+          <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6 md:gap-8 auto-rows-fr">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div
+                key={i}
+                className="relative h-64 sm:h-72 md:h-80 rounded-xl bg-[var(--card)] overflow-hidden border border-[var(--border)]"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-[var(--muted)]/10 via-[var(--muted)]/30 to-[var(--muted)]/10 animate-[shimmer_1.6s_infinite_linear]" />
+                <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-[var(--background)]/80 to-transparent" />
+              </div>
+            ))}
           </div>
         ) : filteredList.length === 0 ? (
           <div className="text-center py-16">
