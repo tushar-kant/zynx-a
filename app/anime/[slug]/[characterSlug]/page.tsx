@@ -67,7 +67,7 @@ function CharacterWallpapersPage() {
             });
           }
         } else {
-          setError(data.message || "No wallpapers found for this character.");
+          setError(data.message || "No items found for this character.");
         }
       } catch (err) {
         console.error("Error fetching wallpapers:", err);
@@ -172,7 +172,7 @@ function CharacterWallpapersPage() {
                 <input
                   ref={inputRef}
                   type="text"
-                  placeholder="Search wallpapers..."
+                  placeholder="Search animes..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   className="w-full border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] placeholder-[var(--muted)] px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-[var(--accent)] transition-all duration-200"
@@ -200,7 +200,7 @@ function CharacterWallpapersPage() {
                   <FaImages className="w-3 h-3" />
                   <span>
                     {filteredWallpapers.length}{" "}
-                    {filteredWallpapers.length === 1 ? "Wallpaper" : "Wallpapers"}
+                    {filteredWallpapers.length === 1 ? "Items" : "Items"}
                   </span>
                 </div>
               )}
@@ -259,7 +259,7 @@ function CharacterWallpapersPage() {
           <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 text-center px-4">
             <div className="text-6xl sm:text-8xl opacity-20">🎨</div>
             <p className="text-[var(--muted)] text-base sm:text-lg">
-              No matching wallpapers found.
+              No matching items found.
             </p>
             <button
               onClick={() => setQuery("")}

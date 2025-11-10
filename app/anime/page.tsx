@@ -12,7 +12,7 @@ type Anime = {
   cover: string;
 };
 
-const LIMIT = 6; // Number of anime per page
+const LIMIT = 6;
 
 function AnimePage() {
   const [animeList, setAnimeList] = useState<Anime[]>([]);
@@ -26,6 +26,7 @@ function AnimePage() {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const loaderRef = useRef<HTMLDivElement>(null);
+  const initialLoad = useRef(false); // prevents duplicate fetch on dev StrictMode
 
   // ✅ Fetch Anime (supports pagination or full list)
   const fetchAnime = useCallback(async (pageNum: number) => {
@@ -35,18 +36,34 @@ function AnimePage() {
       const data = await res.json();
 
       if (data.success) {
-        // If backend supports pagination
         if (Array.isArray(data.data)) {
           if (data.data.length === 0) {
             setHasMore(false);
           } else {
-            setAnimeList((prev) => [...prev, ...data.data]);
-            setFilteredList((prev) => [...prev, ...data.data]);
+            // ✅ Deduplicate before saving
+            setAnimeList((prev) => {
+              const all = [...prev, ...data.data];
+              return all.filter(
+                (item, index, self) =>
+                  index === self.findIndex((a) => a.id === item.id)
+              );
+            });
+            setFilteredList((prev) => {
+              const all = [...prev, ...data.data];
+              return all.filter(
+                (item, index, self) =>
+                  index === self.findIndex((a) => a.id === item.id)
+              );
+            });
           }
         } else {
-          // Fallback: if backend returns full list without pagination
-          setAnimeList(data.data || []);
-          setFilteredList(data.data || []);
+          // If backend doesn’t paginate
+          const uniqueList = (data.data || []).filter(
+            (item: Anime, index: number, self: Anime[]) =>
+              index === self.findIndex((a) => a.id === item.id)
+          );
+          setAnimeList(uniqueList);
+          setFilteredList(uniqueList);
           setHasMore(false);
         }
       }
@@ -58,12 +75,14 @@ function AnimePage() {
     }
   }, []);
 
-  // 🔹 Initial fetch
+  // 🔹 Initial fetch (guarded for StrictMode)
   useEffect(() => {
+    if (initialLoad.current) return;
+    initialLoad.current = true;
     fetchAnime(1);
   }, [fetchAnime]);
 
-  // 🔍 Search filter
+  // 🔹 Search Filter
   useEffect(() => {
     if (!query.trim()) {
       setFilteredList(animeList);
@@ -75,7 +94,7 @@ function AnimePage() {
     }
   }, [query, animeList]);
 
-  // 🔹 Auto focus search
+  // 🔹 Auto-focus search
   useEffect(() => {
     if (searchOpen && inputRef.current) inputRef.current.focus();
   }, [searchOpen]);
@@ -91,15 +110,16 @@ function AnimePage() {
       { threshold: 1 }
     );
 
-    const currentLoader = loaderRef.current;
-    if (currentLoader) observer.observe(currentLoader);
+    const loader = loaderRef.current;
+    if (loader) observer.observe(loader);
 
     return () => {
-      if (currentLoader) observer.unobserve(currentLoader);
+      if (loader) observer.unobserve(loader);
+      observer.disconnect();
     };
   }, [hasMore, loadingMore]);
 
-  // 🔹 Fetch when page changes
+  // 🔹 Fetch next page
   useEffect(() => {
     if (page > 1) fetchAnime(page);
   }, [page, fetchAnime]);
@@ -132,13 +152,7 @@ function AnimePage() {
                 placeholder="Search anime..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="
-                  w-full border border-[var(--border)] bg-[var(--background)] 
-                  text-[var(--foreground)] placeholder-[var(--muted)] 
-                  px-3 py-2 rounded-lg text-sm 
-                  focus:outline-none focus:border-[var(--accent)] 
-                  transition-all duration-200
-                "
+                className="w-full border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] placeholder-[var(--muted)] px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-[var(--accent)] transition-all duration-200"
               />
             </div>
 
@@ -151,6 +165,16 @@ function AnimePage() {
             </button>
           </div>
         </div>
+
+        {/* 🎬 Anime Count */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 pb-4">
+          {!loading && (
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-full text-xs sm:text-sm text-[var(--accent)] font-medium">
+              🎬 {filteredList.length}{" "}
+              {filteredList.length === 1 ? "Anime" : "Animes"}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* ✅ Anime Grid */}
@@ -158,18 +182,22 @@ function AnimePage() {
         {loading && animeList.length === 0 ? (
           <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4">
             <div className="w-12 h-12 border-4 border-[var(--accent)] border-t-transparent rounded-full animate-spin" />
-            <p className="text-[var(--muted)] text-sm sm:text-base">Loading anime...</p>
+            <p className="text-[var(--muted)] text-sm sm:text-base">
+              Loading anime...
+            </p>
           </div>
         ) : filteredList.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-[var(--muted)] text-base sm:text-lg">No anime found.</p>
+            <p className="text-[var(--muted)] text-base sm:text-lg">
+              No anime found.
+            </p>
           </div>
         ) : (
           <>
-            <div
-              className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 xs:gap-5 sm:gap-6 md:gap-8 auto-rows-fr"
-            >
-              {filteredList.map((anime) => (
+            <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 xs:gap-5 sm:gap-6 md:gap-8 auto-rows-fr">
+              {Array.from(
+                new Map(filteredList.map((a) => [a.id, a])).values()
+              ).map((anime) => (
                 <AnimeCard key={anime.id} {...anime} />
               ))}
             </div>
