@@ -85,12 +85,12 @@ export default function Header() {
             >
               Anime
             </Link>
-            <Link
+            {/* <Link
               href="/anime-live"
               className="hover:text-[var(--foreground)] transition"
             >
               Live anime
-            </Link>
+            </Link> */}
           </nav>
 
           {/* Right Side (Theme + Mobile Button) */}
@@ -115,7 +115,7 @@ export default function Header() {
           <nav className="flex flex-col px-6 py-4 space-y-4 text-[var(--muted)]">
             {[
               // { href: "/", label: "Home" },
-              { href: "/anime-live", label: "Live anime" },
+              // { href: "/anime-live", label: "Live anime" },
               { href: "/anime", label: "Anime" },
             ].map(({ href, label }) => (
               <Link

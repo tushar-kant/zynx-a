@@ -36,9 +36,8 @@ export default function Footer() {
             <Link href="/anime" className="text-xs sm:text-sm hover:text-[var(--accent)] transition">
               Anime
             </Link>
-            <Link href="/anime-live" className="text-xs sm:text-sm hover:text-[var(--accent)] transition">
-              Live Anime
-            </Link>
+          
+          
             {/* <Link href="/about" className="text-xs sm:text-sm hover:text-[var(--accent)] transition">
               About
             </Link> */}
