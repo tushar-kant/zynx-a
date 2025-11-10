@@ -102,7 +102,7 @@ export default function HeroSection() {
           <span className="text-[var(--accent)]">Zy</span>
           <span className="text-[var(--foreground)] relative inline-block">
             nx
-            <span className="absolute bottom-0 left-0 w-full h-1 bg-[var(--accent)] animate-underline-repeat"></span>
+            {/* <span className="absolute bottom-0 left-0 w-full h-1 bg-[var(--accent)] animate-underline-repeat"></span> */}
           </span>
           <span className="text-[var(--foreground)]"> Anime</span>
         </h1>
@@ -111,7 +111,7 @@ export default function HeroSection() {
           <span className="text-[var(--accent)] font-medium">Anime Art</span>,{" "}
           Characters, and Wallpapers — <br />
           <span className="text-[var(--accent)] font-medium">
-            All free for every anime fan 💫
+            All free for every anime fan 
           </span>
         </p>
       </div>

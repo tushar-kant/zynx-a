@@ -191,15 +191,13 @@ function CharacterWallpapersPage() {
           {/* Title + Toggle */}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h1 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-[var(--accent)] leading-tight">
-                {characterName}
-              </h1>
+             
 
               {!loading && !error && filteredWallpapers.length >= 0 && (
                 <div className="flex items-center gap-2 mt-2 px-3 py-1.5 bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-full text-xs sm:text-sm text-[var(--accent)] font-medium">
                   <FaImages className="w-3 h-3" />
                   <span>
-                    {filteredWallpapers.length}{" "}
+                    {filteredWallpapers.length}{" "}{characterName}{" "}
                     {filteredWallpapers.length === 1 ? "Items" : "Items"}
                   </span>
                 </div>

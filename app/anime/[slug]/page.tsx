@@ -176,15 +176,15 @@ function AnimeCharactersPage() {
 
         {/* Title */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 pb-4">
-          <h1 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-[var(--accent)] leading-tight text-left">
+          {/* <h1 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-[var(--accent)] leading-tight text-left">
             {animeTitle}
-          </h1>
+          </h1> */}
 
           {/* Show character count (even if 0) */}
           {!loading && !error && (
             <div className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-full text-xs sm:text-sm text-[var(--accent)] font-medium">
-              👥 {filteredCharacters.length}{" "}
-              {filteredCharacters.length === 1 ? "Character" : "Characters"}
+              👥 {filteredCharacters.length}{" "}{animeTitle}{" "}
+              {filteredCharacters.length === 1 ? "Character" : "Characters" }
             </div>
           )}
         </div>
