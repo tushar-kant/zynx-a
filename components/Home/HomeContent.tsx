@@ -11,28 +11,32 @@ export default function HomeContent() {
       title: "Naruto Uzumaki",
       anime: "Naruto",
       downloads: "1.1K",
-      cover: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668145/gr_pgkvkr.jpg",
+      cover:
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668145/gr_pgkvkr.jpg",
     },
     {
       id: 2,
       title: "Luffy Gear Fifth",
       anime: "One Piece",
       downloads: "0.8K",
-      cover: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668204/sgeg_ciahdp.jpg",
+      cover:
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668204/sgeg_ciahdp.jpg",
     },
     {
       id: 3,
-      title: "Muzen",
-      anime: "Demon slayer",
+      title: "Muzan Kibutsuji",
+      anime: "Demon Slayer",
       downloads: "2.1K",
-      cover: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668045/b3oddwrpknooa97cl8cm_y9lo5n.jpg",
+      cover:
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668045/b3oddwrpknooa97cl8cm_y9lo5n.jpg",
     },
     {
       id: 4,
-      title: "kakashi",
+      title: "Kakashi Hatake",
       anime: "Naruto",
       downloads: "1.5K",
-      cover: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668136/u4muofyw343l4nhw7nof_zzcbzk.jpg",
+      cover:
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668136/u4muofyw343l4nhw7nof_zzcbzk.jpg",
     },
   ];
 
@@ -51,7 +55,6 @@ export default function HomeContent() {
     { name: "Dragon Ball", color: "from-yellow-500 to-orange-600", icon: "🐉" },
   ];
 
-
   const stats = [
     { number: "1K+", label: "HD Wallpapers" },
     { number: "5K+", label: "Downloads" },
@@ -59,17 +62,23 @@ export default function HomeContent() {
     { number: "24/7", label: "New Uploads" },
   ];
 
-
-
   return (
-    <section className="bg-[var(--background)] text-[var(--foreground)] relative z-10">
-      {/* 📊 Stats Section (Full Width) */}
-      <div className="w-full bg-[var(--card)] border-b border-[var(--border)] py-14">
+    <section className="bg-[var(--background)] text-[var(--foreground)] relative z-10 overflow-hidden">
+      {/* 🎨 Background Glow Layers */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,var(--accent)/10,transparent_60%),radial-gradient(circle_at_bottom_left,var(--accent-light,#00d8ff)/10,transparent_60%)] animate-pulse-slow pointer-events-none" />
+
+      {/* 📊 Stats Section */}
+      <div className="w-full bg-[var(--card)] border-b border-[var(--border)] py-16">
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold mb-10">Zynx Stats</h2>
+          <h2 className="text-3xl sm:text-4xl font-extrabold mb-10 tracking-wide text-[var(--accent)]">
+            Zynx Stats
+          </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
             {stats.map((stat, i) => (
-              <div key={i} className="group">
+              <div
+                key={i}
+                className="group p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] hover:border-[var(--accent)] hover:shadow-[0_0_25px_-8px_var(--accent)] transition-all"
+              >
                 <div className="text-4xl font-extrabold text-[var(--accent)] mb-2 group-hover:scale-110 transition-transform">
                   {stat.number}
                 </div>
@@ -84,18 +93,17 @@ export default function HomeContent() {
 
       {/* 🔥 Trending Wallpapers */}
       <div className="max-w-6xl mx-auto px-6 py-20">
-                <div className="flex justify-between items-center mb-10 flex-wrap gap-4">
+        <div className="flex justify-between items-center mb-10 flex-wrap gap-4">
           <div>
-            <h2 className="text-4xl font-bold mb-2">Trending Now</h2>
+            <h2 className="text-4xl font-bold mb-2">Trending Now 🔥</h2>
             <p className="text-[var(--muted)] text-lg">
               Most downloaded wallpapers this week
             </p>
           </div>
 
-          {/* View All on Right */}
           <Link
             href="/anime"
-            className="inline-flex items-center gap-2 bg-white text-[var(--accent)] px-8 py-3 rounded-full font-semibold hover:bg-[var(--accent)] hover:text-white transition-all duration-300 shadow-md hover:shadow-lg"
+            className="inline-flex items-center gap-2 bg-[var(--accent)]/10 border border-[var(--accent)] text-[var(--accent)] px-6 py-2.5 rounded-full font-semibold hover:bg-[var(--accent)] hover:text-white transition-all duration-300 shadow-md hover:shadow-[0_0_20px_-4px_var(--accent)]"
           >
             View All
             <svg
@@ -112,53 +120,46 @@ export default function HomeContent() {
               />
             </svg>
           </Link>
-
         </div>
 
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
-  {featuredWallpapers.map((wall) => (
-    <div
-      key={wall.id}
-      className="group rounded-xl md:rounded-2xl overflow-hidden bg-[var(--card)] border border-[var(--border)] hover:shadow-2xl hover:scale-[1.02] md:hover:scale-[1.04] transition-all duration-300"
-    >
-      <div className="relative w-full aspect-[3/4] md:aspect-[4/5] overflow-hidden">
-        <Image
-          src={wall.cover || logo}
-          alt={wall.title}
-          fill
-          className="object-cover group-hover:scale-110 transition"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = logo.src;
-          }}
-        />
-        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-          <span className="text-white text-sm md:text-lg font-bold tracking-wide px-2 text-center">
-            {wall.anime}
-          </span>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+          {featuredWallpapers.map((wall) => (
+            <div
+              key={wall.id}
+              className="group rounded-xl overflow-hidden bg-[var(--card)] border border-[var(--border)] hover:shadow-[0_0_25px_-6px_var(--accent)] hover:border-[var(--accent)] hover:scale-[1.03] transition-all duration-300"
+            >
+              <div className="relative w-full aspect-[3/4] overflow-hidden">
+                <Image
+                  src={wall.cover || logo}
+                  alt={wall.title}
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                  <span className="text-white text-base md:text-lg font-bold tracking-wide px-3 text-center drop-shadow-lg">
+                    {wall.anime}
+                  </span>
+                </div>
+              </div>
+              <div className="p-4">
+                <h3 className="font-bold text-base md:text-lg mb-1 text-[var(--accent)] truncate">
+                  {wall.title}
+                </h3>
+                <div className="flex justify-between items-center text-[var(--muted)] text-xs md:text-sm">
+                  <span className="truncate mr-2">{wall.anime}</span>
+                  <span className="shrink-0">⬇ {wall.downloads}</span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-      <div className="p-3 md:p-5">
-        <h3 className="font-bold text-sm md:text-lg mb-1 text-[var(--accent)] truncate">
-          {wall.title}
-        </h3>
-        <div className="flex justify-between items-center text-[var(--muted)] text-xs md:text-sm">
-          <span className="truncate mr-2">{wall.anime}</span>
-          <span className="shrink-0">⬇ {wall.downloads}</span>
-        </div>
-      </div>
-    </div>
-  ))}
-</div>
       </div>
 
       {/* ✨ Categories Section */}
-      <div className="py-20 bg-[var(--background)]">
+      <div className="py-20 bg-[var(--background)] border-t border-[var(--border)]">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
-            <h2 className="text-4xl font-bold text-[var(--foreground)] mb-2">
-              Browse Anime
-            </h2>
+            <h2 className="text-4xl font-bold mb-2">Browse Anime</h2>
             <div className="w-20 h-1 bg-[var(--accent)] mx-auto rounded-full" />
           </div>
 
@@ -167,14 +168,12 @@ export default function HomeContent() {
               <Link
                 key={i}
                 href={`/anime/${cat.name.toLowerCase().replace(/\s+/g, "-")}`}
-                className="group flex flex-col items-center gap-3 p-6 rounded-2xl bg-[var(--card)] border border-[var(--border)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:border-[var(--accent)] transition-all duration-300"
+                className="group flex flex-col items-center gap-3 p-6 rounded-2xl bg-[var(--card)] border border-[var(--border)] hover:border-[var(--accent)] hover:shadow-[0_0_25px_-8px_var(--accent)] transition-all"
               >
-                <div className="w-14 h-14 flex items-center justify-center rounded-full bg-[var(--background)] group-hover:bg-[var(--accent)] transition-colors duration-300">
-                  <span className="text-2xl group-hover:scale-110 transition-transform duration-300">
-                    {cat.icon}
-                  </span>
+                <div className="w-14 h-14 flex items-center justify-center rounded-full bg-[var(--background)] group-hover:bg-[var(--accent)] text-[var(--accent)] group-hover:text-white text-2xl transition-all">
+                  {cat.icon}
                 </div>
-                <span className="text-sm font-medium text-[var(--foreground)] text-center leading-tight">
+                <span className="text-sm font-medium text-center">
                   {cat.name}
                 </span>
               </Link>
@@ -182,8 +181,6 @@ export default function HomeContent() {
           </div>
         </div>
       </div>
-
-
     </section>
   );
 }

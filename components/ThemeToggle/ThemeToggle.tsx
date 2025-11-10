@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 const themes = [
   { id: "light", icon: "☀️", label: "Light" },
   { id: "dark", icon: "🌙", label: "Dark" },
-  { id: "cyber", icon: "💠", label: "Cyber" },
   { id: "sakura", icon: "🌸", label: "Sakura" },
   { id: "violet", icon: "💜", label: "Violet" },
   { id: "ember", icon: "🔥", label: "Ember" },
@@ -19,6 +18,8 @@ const themes = [
   { id: "monochrome", icon: "🎭", label: "Monochrome" },
   { id: "tropical", icon: "🌺", label: "Tropical" },
   { id: "retro", icon: "👾", label: "Retro" },
+    { id: "cyber", icon: "💠", label: "Cyber" },
+
 ];
 
 export default function ThemeToggle() {

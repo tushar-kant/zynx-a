@@ -13,7 +13,7 @@ type Wallpaper = {
   url: string;
   downloadUrl: string;
   tags: string[];
-  live?: boolean; // 🔥 add this field to mark as live (video)
+  live?: boolean;
 };
 
 export default function WallpaperPreviewPage() {
@@ -75,26 +75,57 @@ export default function WallpaperPreviewPage() {
     }
   };
 
+  const isVideoUrl = (url: string) => /\.(mp4|webm|mov|m4v)$/i.test(url);
+
+  // 🔥 FIXED: Proper video download with Cloudinary support
   const handleDownload = async (size: string) => {
     if (!wallpaper?.downloadUrl) return;
     setShowModal(false);
 
-    const sizeMap: Record<string, string> = {
-      pc: `${wallpaper.downloadUrl}`,
-  
-      phone: `${wallpaper.downloadUrl}`,
-    };
-
-    const url = sizeMap[size];
-    if (!url) return;
+    const url = wallpaper.downloadUrl;
 
     try {
+      // Detect if it's a video from URL
+      const isVideo = isVideoUrl(url);
+      
+      // Get extension from URL if possible
+      const urlExtension = url.match(/\.([^./?#]+)(?:[?#]|$)/)?.[1]?.toLowerCase() || '';
+      
+      // Determine file extension
+      let extension = "jpg";
+      if (isVideo) {
+        extension = urlExtension || "mp4"; // Use URL extension or default to mp4
+      } else {
+        extension = urlExtension || "jpg";
+      }
+
+      // 🎯 Build filename with size and correct extension
+      const filename = `${wallpaper.title.replace(/\s+/g, "_")}_${size}.${extension}`;
+
+      // For Cloudinary and other CORS-enabled URLs, try direct download first
+      if (url.includes('cloudinary.com') || url.includes('res.cloudinary')) {
+        // Direct download link approach
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filename;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        return;
+      }
+
+      // Fallback: Fetch and create blob for other URLs
       const res = await fetch(url);
+      if (!res.ok) throw new Error(`Failed to fetch: ${res.statusText}`);
+      
       const blob = await res.blob();
+
+      // 📥 Trigger download
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      const extension = blob.type.split("/")[1] || "jpg";
-      link.download = `${wallpaper.title.replace(/\s+/g, "_")}_${size}.${extension}`;
+      link.download = filename;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -105,10 +136,14 @@ export default function WallpaperPreviewPage() {
     }
   };
 
-  // 🔹 Helper — check if URL is a video
-  const isVideoUrl = (url: string) => /\.(mp4|webm|mov|m4v)$/i.test(url);
-
-if (loading) { return ( <main className="min-h-screen flex flex-col items-center justify-center gap-4 px-4"> <div className="w-12 h-12 border-4 border-[var(--accent)] border-t-transparent rounded-full animate-spin"></div> <p className="text-[var(--muted)] text-sm">Loading wallpaper...</p> </main> ); }
+  if (loading) {
+    return (
+      <main className="min-h-screen flex flex-col items-center justify-center gap-4 px-4">
+        <div className="w-12 h-12 border-4 border-[var(--accent)] border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-[var(--muted)] text-sm">Loading wallpaper...</p>
+      </main>
+    );
+  }
 
   if (error || !wallpaper) {
     return (
@@ -127,7 +162,7 @@ if (loading) { return ( <main className="min-h-screen flex flex-col items-center
 
   return (
     <main className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
-      {/* Top Action Bar */}
+      {/* Top Bar */}
       <div className="sticky top-0 z-20 w-full bg-[var(--card)] border-b border-[var(--border)] backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
           <button
@@ -163,18 +198,18 @@ if (loading) { return ( <main className="min-h-screen flex flex-col items-center
         </div>
       </div>
 
-      {/* Wallpaper / Video Display */}
+      {/* Wallpaper or Video */}
       <div className="flex items-center justify-center min-h-[calc(100vh-64px)] p-4">
         <div className="max-w-5xl w-full bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-xl overflow-hidden">
-          <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] bg-[var(--background)] flex items-center justify-center">
+          <div className="relative w-full h-[390px] sm:h-[485px] md:h-[580px] lg:h-[670px] bg-[var(--background)] flex items-center justify-center">
             {isVideoUrl(wallpaper.url) ? (
               <video
                 src={wallpaper.url}
                 autoPlay
                 loop
-                muted
+                
                 playsInline
-                controls
+                
                 className="w-full h-full object-contain rounded-lg"
               />
             ) : (
@@ -209,47 +244,75 @@ if (loading) { return ( <main className="min-h-screen flex flex-col items-center
         </div>
       </div>
 
-      {/* Download Modal */}
-      {showModal && (
-        <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+{showModal && (
+  <div
+    className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn"
+    onClick={() => setShowModal(false)}
+  >
+    <div
+      className="relative bg-[var(--card)] border border-[var(--border)] rounded-2xl shadow-2xl overflow-hidden max-w-md w-full text-center transform transition-all animate-slideUp"
+      onClick={(e) => e.stopPropagation()} // prevents closing when clicking inside
+    >
+      {/* Glowing gradient edge (non-interactive) */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[var(--accent)] via-pink-500 to-[var(--accent)] opacity-25 blur-2xl animate-pulse pointer-events-none"></div>
+
+      {/* Modal Content Layer */}
+      <div className="relative p-8 z-20">
+        {/* Close Button */}
+        <button
           onClick={() => setShowModal(false)}
+          className="absolute top-4 right-4 text-[var(--muted)] hover:text-[var(--accent)] transition p-1"
         >
-          <div
-            className="relative bg-[var(--card)] p-6 rounded-xl shadow-2xl text-center max-w-sm w-full border border-[var(--border)]"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <FaTimes className="w-5 h-5" />
+        </button>
+
+        {/* Title */}
+        <h2 className="text-2xl font-bold text-[var(--accent)] mb-3 tracking-wide">
+          {isVideoUrl(wallpaper.downloadUrl)
+            ? "Download Live Wallpaper"
+            : "Download Wallpaper"}
+        </h2>
+
+        {/* Description */}
+        <p className="text-[var(--muted)] mb-6 text-sm">
+          {isVideoUrl(wallpaper.downloadUrl)
+            ? "Choose your  format  (MP4)."
+            : "Select the size best suited for you"}
+        </p>
+
+        {/* Buttons */}
+        <div className="flex flex-col gap-3">
+          {[
+            {
+              type: "pc",
+              label: isVideoUrl(wallpaper.downloadUrl)
+                ? " PC (1080p MP4)"
+                : " PC (4K Image)",
+            },
+            {
+              type: "phone",
+              label: isVideoUrl(wallpaper.downloadUrl)
+                ? " Phone (Vertical MP4)"
+                : " Phone (Vertical Image)",
+            },
+          ].map(({ type, label }) => (
             <button
-              onClick={() => setShowModal(false)}
-              className="absolute top-3 right-3 text-[var(--muted)] hover:text-[var(--accent)] transition p-1"
+              key={type}
+              onClick={() => handleDownload(type)}
+              className="relative flex items-center justify-center gap-3 py-3 rounded-xl font-medium text-white bg-gradient-to-r from-[var(--accent)] to-pink-600 hover:brightness-110 transition active:scale-95 shadow-lg group"
             >
-              <FaTimes className="w-5 h-5" />
+              <FaDownload className="w-4 h-4 opacity-80 group-hover:translate-y-[2px] transition-transform" />
+              <span>{label}</span>
             </button>
-
-            <h2 className="text-xl font-semibold text-[var(--accent)] mb-6 pr-6">
-              Choose Download Size
-            </h2>
-
-            <div className="flex flex-col gap-3">
-              {[
-                { type: "pc", label: "PC (4K)", icon: "🖥️" },
-         
-                { type: "phone", label: "Phone (Vertical)", icon: "📱" },
-              ].map(({ type, label, icon }) => (
-                <button
-                  key={type}
-                  onClick={() => handleDownload(type)}
-                  className="flex items-center justify-center gap-3 bg-[var(--accent)] text-white py-3 rounded-lg hover:brightness-110 transition active:scale-95"
-                >
-                  <span className="text-lg">{icon}</span>
-                  <span className="font-medium">{label}</span>
-                  <FaDownload className="w-4 h-4 ml-auto" />
-                </button>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
-      )}
+      </div>
+    </div>
+  </div>
+)}
+
+
+
     </main>
   );
 }

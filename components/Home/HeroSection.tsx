@@ -158,14 +158,14 @@ export default function HeroSection() {
               </Link>
               <span className="text-[var(--muted)]">|</span>
               <Link
-                href="/anime"
+                href="/shop"
                 className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                   isLive
                     ? "bg-gradient-to-r from-[var(--accent)] to-purple-600 text-white shadow-[0_0_12px_var(--accent)]"
                     : "text-[var(--muted)] hover:text-[var(--accent)]"
                 }`}
               >
-                /anime
+                /shop
               </Link>
             </div>
           </div>
