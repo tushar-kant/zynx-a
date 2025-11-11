@@ -39,5 +39,23 @@ export const gojoWallpapers = {
         "HD",
       ],
     },
+    {
+  id: "gojo-003",
+  slug: "gojo-dark-theme",
+  title: "Gojo Dark Theme",
+  url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762844088/anime-wallpaper_vmsy5o.png",
+  downloadUrl:
+    "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762844088/anime-wallpaper_vmsy5o.png",
+  live: false,
+  tags: [
+    "Satoru Gojo",
+    "Dark Theme",
+    "Jujutsu Kaisen",
+    "Infinity Technique",
+    "Anime Aesthetic",
+    "Black Background",
+    "HD",
+  ],
+},
   ],
 };

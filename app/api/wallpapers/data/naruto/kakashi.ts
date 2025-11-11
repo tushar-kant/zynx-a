@@ -6,9 +6,9 @@ export const kakashiWallpapers = {
       id: "kakashi-001",
       slug: "kakashi-lightning-blade",
       title: "Kakashi Lightning Blade",
-      url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668125/itachi-saringan-uchiha_xtpvcq_imh8gc.jpg",
+      url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668136/u4muofyw343l4nhw7nof_zzcbzk.jpg",
       downloadUrl:
-        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668125/itachi-saringan-uchiha_xtpvcq_imh8gc.jpg",
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668136/u4muofyw343l4nhw7nof_zzcbzk.jpg",
       live: false,
       tags: ["Kakashi", "Lightning Blade", "Chidori", "Anime", "4K"],
     },
