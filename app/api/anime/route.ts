@@ -112,36 +112,47 @@ export async function GET(req: Request) {
     },
   ];
 
-  // ✅ Extract pagination params
+  // ✅ Extract query parameters
   const { searchParams } = new URL(req.url);
   const pageParam = searchParams.get("page");
   const limitParam = searchParams.get("limit");
+  const searchQuery = searchParams.get("search")?.toLowerCase() || "";
 
-  // ✅ If no pagination params, return all
+  // ✅ Filter by search if provided
+  const filteredList = searchQuery
+    ? animeList.filter(
+        (anime) =>
+          anime.name.toLowerCase().includes(searchQuery) ||
+          anime.description.toLowerCase().includes(searchQuery)
+      )
+    : animeList;
+
+  // ✅ If no pagination, return all filtered
   if (!pageParam && !limitParam) {
     return NextResponse.json({
       success: true,
-      data: animeList,
-      total: animeList.length,
+      data: filteredList,
+      total: filteredList.length,
     });
   }
 
-  // ✅ Parse values safely
+  // ✅ Parse pagination safely
   const page = parseInt(pageParam || "1", 10);
-  const limit = parseInt(limitParam || "6", 10); // default 6 per page
+  const limit = parseInt(limitParam || "6", 10);
 
-  // ✅ Slice based on pagination
+  // ✅ Slice data for pagination
   const start = (page - 1) * limit;
   const end = start + limit;
-  const paginated = animeList.slice(start, end);
-  const hasMore = end < animeList.length;
+  const paginated = filteredList.slice(start, end);
+  const hasMore = end < filteredList.length;
 
+  // ✅ Return paginated + filtered result
   return NextResponse.json({
     success: true,
     data: paginated,
     page,
     limit,
     hasMore,
-    total: animeList.length,
+    total: filteredList.length,
   });
 }

@@ -13,7 +13,7 @@ import { fullmetalAlchemistCharacters } from "./data/fullmetalalchemist";
 import { dragonBallCharacters } from "./data/dragonballl";
 import { deathNoteCharacters } from "./data/deathnote";
 
-// 🧩 Combine all into a single lookup object
+// 🧩 Combine all anime characters
 const characters = {
   "naruto": narutoCharacters,
   "one-piece": onePieceCharacters,
@@ -29,22 +29,51 @@ const characters = {
   "dragon-ball": dragonBallCharacters,
 };
 
-// ✅ API route with optional pagination
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const animeSlug = searchParams.get("animeSlug");
     const pageParam = searchParams.get("page");
     const limitParam = searchParams.get("limit");
+    const searchQuery = searchParams.get("search")?.toLowerCase() || "";
 
-    // 🧠 Validate input
+    // 🧠 GLOBAL SEARCH (no animeSlug provided)
     if (!animeSlug) {
-      return NextResponse.json(
-        { success: false, message: "Missing animeSlug parameter." },
-        { status: 400 }
+      // Combine all characters from all anime
+      const allCharacters = Object.entries(characters).flatMap(([slug, list]) =>
+        list.map((char) => ({ ...char, animeSlug: slug }))
       );
+
+      // 🔍 Filter by search term
+      const filtered = searchQuery
+        ? allCharacters.filter(
+            (char) =>
+              char.name.toLowerCase().includes(searchQuery) ||
+              (char.description &&
+                char.description.toLowerCase().includes(searchQuery))
+          )
+        : allCharacters;
+
+      // ⚙️ Pagination (still supported globally)
+      const page = parseInt(pageParam || "1", 10);
+      const limit = parseInt(limitParam || "10", 10);
+      const start = (page - 1) * limit;
+      const end = start + limit;
+      const paginated = filtered.slice(start, end);
+      const hasMore = end < filtered.length;
+
+      return NextResponse.json({
+        success: true,
+        global: true,
+        total: filtered.length,
+        page,
+        limit,
+        hasMore,
+        data: paginated,
+      });
     }
 
+    // 🎯 PER-ANIME SEARCH (existing logic)
     const result = characters[animeSlug as keyof typeof characters];
 
     if (!result) {
@@ -54,26 +83,38 @@ export async function GET(request: Request) {
       );
     }
 
-    // ⚙️ Pagination logic (optional)
+    // 🔍 Apply search filter (optional)
+    const filteredResults = searchQuery
+      ? result.filter(
+          (char) =>
+            char.name.toLowerCase().includes(searchQuery) ||
+            (char.description &&
+              char.description.toLowerCase().includes(searchQuery))
+        )
+      : result;
+
+    // ⚙️ If no pagination, return full filtered list
     if (!pageParam && !limitParam) {
       return NextResponse.json({
         success: true,
-        total: result.length,
-        data: result,
+        anime: animeSlug,
+        total: filteredResults.length,
+        data: filteredResults,
       });
     }
 
+    // ⚙️ Paginate results
     const page = parseInt(pageParam || "1", 10);
     const limit = parseInt(limitParam || "10", 10);
     const start = (page - 1) * limit;
     const end = start + limit;
-    const paginated = result.slice(start, end);
-    const hasMore = end < result.length;
+    const paginated = filteredResults.slice(start, end);
+    const hasMore = end < filteredResults.length;
 
     return NextResponse.json({
       success: true,
       anime: animeSlug,
-      total: result.length,
+      total: filteredResults.length,
       page,
       limit,
       hasMore,

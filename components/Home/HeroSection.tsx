@@ -6,84 +6,71 @@ import { usePathname } from "next/navigation";
 
 export default function HeroSection() {
   const [search, setSearch] = useState("");
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const pathname = usePathname();
   const isLive = pathname.startsWith("/anime-live");
 
-  // ⏳ Debounce input — wait 400ms after typing
+  // ⏳ Debounce
   useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedQuery(search);
-    }, 400);
+    const handler = setTimeout(() => setDebouncedQuery(search), 400);
     return () => clearTimeout(handler);
   }, [search]);
 
-  // 🔍 Search logic
+  // 🔍 Search handler (backend-powered)
   const handleSearch = useCallback(async (query: string) => {
-    if (!query || query.length < 2) {
-      setSearchResults([]);
+    if (!query.trim() || query.length < 2) {
+      setResults([]);
       return;
     }
 
     setLoading(true);
     try {
-      const animeRes = await fetch("/api/anime");
-      const animeData = await animeRes.json();
+      // Parallel backend searches
+      const [animeRes, charRes, wallRes] = await Promise.all([
+        fetch(`/api/anime?search=${encodeURIComponent(query)}`),
+        fetch(`/api/characters?search=${encodeURIComponent(query)}`),
+        fetch(`/api/wallpapers?search=${encodeURIComponent(query)}`)
+      ]);
 
-      const characterPromises = animeData.data.map((a: any) =>
-        fetch(`/api/characters?animeSlug=${a.slug}`).then((r) => r.json())
-      );
-      const characterResults = await Promise.all(characterPromises);
+      const [animeData, charData, wallData] = await Promise.all([
+        animeRes.json(),
+        charRes.json(),
+        wallRes.json()
+      ]);
 
-      const allCharacters = characterResults.flatMap((r) =>
-        r.success ? r.data.map((c: any) => ({ ...c, animeSlug: r.data.animeSlug })) : []
-      );
+      const animeResults = (animeData.data || []).map((a: any) => ({
+        type: "Anime",
+        name: a.name,
+        slug: `/anime/${a.slug}`,
+      }));
 
-      const wallpaperPromises = allCharacters.slice(0, 6).map((c: any) =>
-        fetch(`/api/wallpapers?characterSlug=${c.slug}`).then((r) => r.json())
-      );
-      const wallpaperResults = await Promise.all(wallpaperPromises);
-      const allWallpapers = wallpaperResults.flatMap((r) =>
-        r.success ? r.data : []
-      );
+      const charResults = (charData.data || []).map((c: any) => ({
+        type: "Character",
+        name: c.name,
+        slug: `/anime/${c.animeSlug || "naruto"}/${c.slug}`,
+      }));
 
-      const animeResults = animeData.data
-        .filter((a: any) => a.name.toLowerCase().includes(query.toLowerCase()))
-        .map((a: any) => ({
-          type: "Anime",
-          name: a.name,
-          slug: `/anime/${a.slug}`,
-        }));
+      const wallResults = (wallData.data || []).map((w: any) => ({
+        type: w.live ? "Live Wallpaper" : "Wallpaper",
+        name: w.title,
+        slug: `/wallpaper/${w.slug}`,
+      }));
 
-      const charResults = allCharacters
-        .filter((c: any) => c.name.toLowerCase().includes(query.toLowerCase()))
-        .map((c: any) => ({
-          type: "Character",
-          name: c.name,
-          slug: `/anime/${c.animeSlug || "naruto"}/${c.slug}`,
-        }));
-
-      const wallResults = allWallpapers
-        .filter((w: any) => w.title.toLowerCase().includes(query.toLowerCase()))
-        .map((w: any) => ({
-          type: w.live ? "Live Wallpaper" : "Wallpaper",
-          name: w.title,
-          slug: `/wallpaper/${w.slug}`,
-        }));
-
-      setSearchResults([...animeResults, ...charResults, ...wallResults]);
+      setResults([...animeResults, ...charResults, ...wallResults]);
     } catch (err) {
       console.error("Search error:", err);
+      setResults([]);
     } finally {
       setLoading(false);
     }
   }, []);
 
-  // Run search when debounced query updates
+  // Run when query updates
   useEffect(() => {
     if (debouncedQuery) handleSearch(debouncedQuery);
+    else setResults([]);
   }, [debouncedQuery, handleSearch]);
 
   return (
@@ -93,32 +80,24 @@ export default function HeroSection() {
         <div className="absolute top-0 left-0 w-96 h-96 bg-[var(--accent)] opacity-20 blur-[130px] animate-float" />
         <div className="absolute bottom-0 right-0 w-[28rem] h-[28rem] bg-purple-600 opacity-20 blur-[150px] animate-float-delayed" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[32rem] h-[32rem] bg-blue-500 opacity-15 blur-[140px] animate-pulse-slow" />
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 animate-gradient" />
       </div>
 
       {/* 🖋 Title */}
       <div className="relative -translate-y-12">
         <h1 className="text-6xl md:text-8xl font-extrabold mb-6 tracking-tight drop-shadow-lg">
           <span className="text-[var(--accent)]">Zy</span>
-          <span className="text-[var(--foreground)] relative inline-block">
-            nx
-            {/* <span className="absolute bottom-0 left-0 w-full h-1 bg-[var(--accent)] animate-underline-repeat"></span> */}
-          </span>
+          <span className="text-[var(--foreground)]">nx</span>
           <span className="text-[var(--foreground)]"> Anime</span>
         </h1>
         <p className="text-[var(--muted)] text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
           Explore breathtaking{" "}
-          <span className="text-[var(--accent)] font-medium">Anime Art</span>,{" "}
-          Characters, and Wallpapers — <br />
-          <span className="text-[var(--accent)] font-medium">
-            All free for every anime fan 
-          </span>
+          <span className="text-[var(--accent)] font-medium">Anime Art</span>, Characters, and Wallpapers —{" "}
+          <span className="text-[var(--accent)] font-medium">All free for every anime fan</span>
         </p>
       </div>
 
-      {/* 🔍 Search + Breadcrumb */}
+      {/* 🔍 Search */}
       <div className="max-w-3xl mx-auto w-full relative -translate-y-8">
-        {/* Search Input */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <div className="relative w-full md:w-[70%]">
             <input
@@ -134,16 +113,11 @@ export default function HeroSection() {
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
 
-          {/* 🌐 Breadcrumb Buttons */}
+          {/* 🌐 Breadcrumb */}
           <div className="flex justify-center md:justify-end w-full md:w-auto">
             <div className="inline-flex items-center gap-2 bg-[var(--card)] border border-[var(--border)] rounded-full px-2 py-1.5 shadow-sm">
               <Link
@@ -171,11 +145,11 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Dropdown */}
-        {search && searchResults.length > 0 && (
+        {/* Results Dropdown */}
+        {search && results.length > 0 && (
           <div className="absolute top-full left-0 w-full mt-3 bg-[var(--card)] border border-[var(--border)] rounded-2xl shadow-2xl z-20 overflow-hidden backdrop-blur-md animate-fadeIn">
             <div className="max-h-72 overflow-y-auto divide-y divide-[var(--border)]">
-              {searchResults.map((item, index) => (
+              {results.map((item, index) => (
                 <Link
                   key={index}
                   href={item.slug}
@@ -183,22 +157,10 @@ export default function HeroSection() {
                 >
                   <div className="flex flex-col text-left">
                     <span className="font-semibold text-base">{item.name}</span>
-                    <span className="text-xs text-[var(--muted)] group-hover:text-white/70">
-                      {item.type}
-                    </span>
+                    <span className="text-xs text-[var(--muted)] group-hover:text-white/70">{item.type}</span>
                   </div>
-                  <svg
-                    className="w-4 h-4 opacity-50 group-hover:opacity-100"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17 8l4 4m0 0l-4 4m4-4H3"
-                    />
+                  <svg className="w-4 h-4 opacity-50 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
                 </Link>
               ))}
@@ -216,46 +178,14 @@ export default function HeroSection() {
 
       {/* 🎞️ Animations */}
       <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          33% { transform: translate(30px, -30px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
-        }
-
-        @keyframes float-delayed {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          33% { transform: translate(-30px, 30px) scale(0.9); }
-          66% { transform: translate(20px, -20px) scale(1.1); }
-        }
-
-        @keyframes pulse-slow {
-          0%, 100% { opacity: 0.15; transform: scale(1); }
-          50% { opacity: 0.25; transform: scale(1.05); }
-        }
-
-        @keyframes gradient {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-
-        @keyframes underline-repeat {
-          0%, 100% { width: 0; left: 0; opacity: 1; }
-          50% { width: 100%; left: 0; opacity: 1; }
-          51% { width: 100%; left: 0; opacity: 0; }
-        }
-
+        @keyframes float { 0%, 100% { transform: translate(0, 0) } 50% { transform: translate(20px, -20px) } }
+        @keyframes float-delayed { 0%, 100% { transform: translate(0, 0) } 50% { transform: translate(-20px, 20px) } }
+        @keyframes pulse-slow { 0%, 100% { opacity: 0.15 } 50% { opacity: 0.25 } }
         .animate-float { animation: float 20s ease-in-out infinite; }
         .animate-float-delayed { animation: float-delayed 25s ease-in-out infinite; }
         .animate-pulse-slow { animation: pulse-slow 15s ease-in-out infinite; }
-        .animate-gradient { animation: gradient 30s linear infinite; }
-        .animate-underline-repeat { animation: underline-repeat 2s ease-in-out infinite; }
-        .animate-fadeIn {
-          animation: fadeIn 0.3s ease-out;
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
+        .animate-fadeIn { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px) } to { opacity: 1; transform: translateY(0) } }
       `}</style>
     </section>
   );

@@ -16,7 +16,6 @@ const LIMIT = 6;
 
 function AnimePage() {
   const [animeList, setAnimeList] = useState<Anime[]>([]);
-  const [filteredList, setFilteredList] = useState<Anime[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -26,73 +25,71 @@ function AnimePage() {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const loaderRef = useRef<HTMLDivElement>(null);
-  const initialLoad = useRef(false); // prevents duplicate fetch on dev StrictMode
+  const initialLoad = useRef(false);
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
-  // ✅ Fetch Anime (supports pagination or full list)
-  const fetchAnime = useCallback(async (pageNum: number) => {
-    try {
-      setLoadingMore(true);
-      const res = await fetch(`/api/anime?page=${pageNum}&limit=${LIMIT}`);
-      const data = await res.json();
+  // ✅ Fetch Anime (with pagination + search)
+  const fetchAnime = useCallback(
+    async (pageNum: number, searchTerm = query) => {
+      try {
+        setLoadingMore(true);
+        const searchParam = searchTerm
+          ? `&search=${encodeURIComponent(searchTerm)}`
+          : "";
+        const res = await fetch(`/api/anime?page=${pageNum}&limit=${LIMIT}${searchParam}`);
+        const data = await res.json();
 
-      if (data.success) {
-        if (Array.isArray(data.data)) {
-          if (data.data.length === 0) {
+        if (data.success) {
+          const fetched = Array.isArray(data.data) ? data.data : [];
+          if (fetched.length === 0) {
             setHasMore(false);
+            if (pageNum === 1) setAnimeList([]);
           } else {
-            // ✅ Deduplicate before saving
-            setAnimeList((prev) => {
-              const all = [...prev, ...data.data];
-              return all.filter(
-                (item, index, self) =>
-                  index === self.findIndex((a) => a.id === item.id)
-              );
-            });
-            setFilteredList((prev) => {
-              const all = [...prev, ...data.data];
-              return all.filter(
-                (item, index, self) =>
-                  index === self.findIndex((a) => a.id === item.id)
-              );
-            });
+            if (pageNum === 1) {
+              setAnimeList(fetched);
+            } else {
+              // Deduplicate to avoid duplicates when scrolling
+              setAnimeList((prev) => {
+                const all = [...prev, ...fetched];
+                return all.filter(
+                  (item, index, self) =>
+                    index === self.findIndex((a) => a.id === item.id)
+                );
+              });
+            }
+            setHasMore(data.hasMore);
           }
-        } else {
-          // If backend doesn’t paginate
-          const uniqueList = (data.data || []).filter(
-            (item: Anime, index: number, self: Anime[]) =>
-              index === self.findIndex((a) => a.id === item.id)
-          );
-          setAnimeList(uniqueList);
-          setFilteredList(uniqueList);
-          setHasMore(false);
         }
+      } catch (err) {
+        console.error("Error fetching anime:", err);
+      } finally {
+        setLoading(false);
+        setLoadingMore(false);
       }
-    } catch (err) {
-      console.error("Error fetching anime:", err);
-    } finally {
-      setLoading(false);
-      setLoadingMore(false);
-    }
-  }, []);
+    },
+    [query]
+  );
 
-  // 🔹 Initial fetch (guarded for StrictMode)
+  // 🔹 Initial fetch (prevent double fetch on StrictMode)
   useEffect(() => {
     if (initialLoad.current) return;
     initialLoad.current = true;
     fetchAnime(1);
   }, [fetchAnime]);
 
-  // 🔹 Search Filter
+  // 🔹 Handle search with debounce
   useEffect(() => {
-    if (!query.trim()) {
-      setFilteredList(animeList);
-    } else {
-      const filtered = animeList.filter((anime) =>
-        anime.name.toLowerCase().includes(query.toLowerCase())
-      );
-      setFilteredList(filtered);
-    }
-  }, [query, animeList]);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setPage(1);
+      setHasMore(true);
+      setAnimeList([]);
+      fetchAnime(1, query);
+    }, 400); // debounce delay 400ms
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [query, fetchAnime]);
 
   // 🔹 Auto-focus search
   useEffect(() => {
@@ -105,7 +102,9 @@ function AnimePage() {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) setPage((prev) => prev + 1);
+        if (entries[0].isIntersecting) {
+          setPage((prev) => prev + 1);
+        }
       },
       { threshold: 1 }
     );
@@ -119,7 +118,7 @@ function AnimePage() {
     };
   }, [hasMore, loadingMore]);
 
-  // 🔹 Fetch next page
+  // 🔹 Fetch next page when page changes
   useEffect(() => {
     if (page > 1) fetchAnime(page);
   }, [page, fetchAnime]);
@@ -157,7 +156,10 @@ function AnimePage() {
             </div>
 
             <button
-              onClick={() => setSearchOpen(!searchOpen)}
+              onClick={() => {
+                setSearchOpen(!searchOpen);
+                if (!searchOpen) setTimeout(() => inputRef.current?.focus(), 200);
+              }}
               className="p-2 rounded-md border border-[var(--border)] hover:bg-[var(--accent)] hover:text-white transition-all duration-200"
               title={searchOpen ? "Close Search" : "Search"}
             >
@@ -174,8 +176,8 @@ function AnimePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 pb-4">
           {!loading && (
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-full text-xs sm:text-sm text-[var(--accent)] font-medium">
-              🎬 {filteredList.length}{" "}
-              {filteredList.length === 1 ? "Anime" : "Animes"}
+              🎬 {animeList.length}{" "}
+              {animeList.length === 1 ? "Anime" : "Animes"}
             </div>
           )}
         </div>
@@ -183,8 +185,8 @@ function AnimePage() {
 
       {/* ✅ Anime Grid */}
       <section className="w-full max-w-7xl mx-auto px-4 xs:px-5 sm:px-6 md:px-8 lg:px-10 py-8 sm:py-12 md:py-16">
-        {/* 🌀 Skeleton Loader */}
         {loading && animeList.length === 0 ? (
+          // 🌀 Skeleton Loader
           <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6 md:gap-8 auto-rows-fr">
             {Array.from({ length: 8 }).map((_, i) => (
               <div
@@ -196,7 +198,8 @@ function AnimePage() {
               </div>
             ))}
           </div>
-        ) : filteredList.length === 0 ? (
+        ) : animeList.length === 0 ? (
+          // ❌ No Results
           <div className="text-center py-16">
             <p className="text-[var(--muted)] text-base sm:text-lg">
               No anime found.
@@ -204,10 +207,9 @@ function AnimePage() {
           </div>
         ) : (
           <>
+            {/* ✅ Anime Grid */}
             <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 xs:gap-5 sm:gap-6 md:gap-8 auto-rows-fr">
-              {Array.from(
-                new Map(filteredList.map((a) => [a.id, a])).values()
-              ).map((anime) => (
+              {animeList.map((anime) => (
                 <AnimeCard key={anime.id} {...anime} />
               ))}
             </div>

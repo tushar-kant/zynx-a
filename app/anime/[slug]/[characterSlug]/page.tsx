@@ -15,6 +15,7 @@ type Wallpaper = {
 };
 
 const LIMIT = 8;
+const DEBOUNCE_DELAY = 400;
 
 function CharacterWallpapersPage() {
   const params = useParams();
@@ -22,7 +23,6 @@ function CharacterWallpapersPage() {
   const characterSlug = params.characterSlug as string;
 
   const [wallpapers, setWallpapers] = useState<Wallpaper[]>([]);
-  const [filteredWallpapers, setFilteredWallpapers] = useState<Wallpaper[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -35,40 +35,39 @@ function CharacterWallpapersPage() {
   const inputRef = useRef<HTMLInputElement>(null);
   const loaderRef = useRef<HTMLDivElement>(null);
   const initialLoad = useRef(false);
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
-  // ✅ Fetch wallpapers with pagination
+  // ✅ Fetch wallpapers (with pagination + search)
   const fetchWallpapers = useCallback(
-    async (pageNum: number) => {
+    async (pageNum: number, searchTerm = query) => {
       if (!characterSlug) return;
       try {
         setLoadingMore(true);
+        const searchParam = searchTerm ? `&search=${encodeURIComponent(searchTerm)}` : "";
         const res = await fetch(
-          `/api/wallpapers?characterSlug=${characterSlug}&page=${pageNum}&limit=${LIMIT}&live=${liveOnly}`
+          `/api/wallpapers?characterSlug=${characterSlug}&page=${pageNum}&limit=${LIMIT}&live=${liveOnly}${searchParam}`
         );
         const data = await res.json();
 
-        if (data.success) {
-          if (data.data.length === 0) {
-            setHasMore(false);
-          } else {
-            setWallpapers((prev) => {
-              const all = [...prev, ...data.data];
-              return all.filter(
-                (item, index, self) =>
-                  index === self.findIndex((w) => w.id === item.id)
-              );
-            });
-            setFilteredWallpapers((prev) => {
-              const all = [...prev, ...data.data];
-              return all.filter(
-                (item, index, self) =>
-                  index === self.findIndex((w) => w.id === item.id)
-              );
-            });
-          }
-        } else {
+        if (!data.success) {
           setError(data.message || "No items found for this character.");
+          if (pageNum === 1) setWallpapers([]);
+          setHasMore(false);
+          return;
         }
+
+        const fetched: Wallpaper[] = Array.isArray(data.data) ? data.data : [];
+
+        if (pageNum === 1) {
+          setWallpapers(fetched);
+        } else {
+          setWallpapers((prev) => {
+            const all = [...prev, ...fetched];
+            return all.filter((item, index, self) => index === self.findIndex((w) => w.id === item.id));
+          });
+        }
+
+        setHasMore(data.hasMore);
       } catch (err) {
         console.error("Error fetching wallpapers:", err);
         setError("Failed to load wallpapers.");
@@ -77,7 +76,7 @@ function CharacterWallpapersPage() {
         setLoadingMore(false);
       }
     },
-    [characterSlug, liveOnly]
+    [characterSlug, liveOnly, query]
   );
 
   // 🔹 Initial fetch
@@ -87,10 +86,24 @@ function CharacterWallpapersPage() {
     fetchWallpapers(1);
   }, [fetchWallpapers]);
 
-  // 🔹 Reset and refetch when live/static toggled
+  // 🔹 Debounced search
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setPage(1);
+      setHasMore(true);
+      setWallpapers([]);
+      setLoading(true);
+      fetchWallpapers(1, query);
+    }, DEBOUNCE_DELAY);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [query, fetchWallpapers]);
+
+  // 🔹 Refetch when Live/Static toggled
   useEffect(() => {
     setWallpapers([]);
-    setFilteredWallpapers([]);
     setPage(1);
     setHasMore(true);
     setLoading(true);
@@ -111,34 +124,18 @@ function CharacterWallpapersPage() {
     const loader = loaderRef.current;
     if (loader) observer.observe(loader);
 
-    // ✅ Always return a cleanup function (never undefined or null)
     return () => {
       if (loader) observer.unobserve(loader);
-      observer.disconnect(); // good practice to fully clean up
+      observer.disconnect();
     };
   }, [hasMore, loadingMore]);
 
-
-  // 🔹 Load next page
+  // 🔹 Fetch next page
   useEffect(() => {
     if (page > 1) fetchWallpapers(page);
   }, [page, fetchWallpapers]);
 
-  // 🔍 Search filter
-  useEffect(() => {
-    if (!query.trim()) {
-      setFilteredWallpapers(wallpapers);
-    } else {
-      const filtered = wallpapers.filter(
-        (wall) =>
-          wall.title.toLowerCase().includes(query.toLowerCase()) ||
-          wall.tags.some((tag) => tag.toLowerCase().includes(query.toLowerCase()))
-      );
-      setFilteredWallpapers(filtered);
-    }
-  }, [query, wallpapers]);
-
-  // Autofocus when search expands
+  // Autofocus search
   useEffect(() => {
     if (searchOpen && inputRef.current) inputRef.current.focus();
   }, [searchOpen]);
@@ -166,13 +163,14 @@ function CharacterWallpapersPage() {
             {/* 🔍 Search */}
             <div className="flex items-center gap-2 relative">
               <div
-                className={`transition-all duration-300 overflow-hidden ${searchOpen ? "w-40 sm:w-60 opacity-100" : "w-0 opacity-0"
-                  }`}
+                className={`transition-all duration-300 overflow-hidden ${
+                  searchOpen ? "w-40 sm:w-60 opacity-100" : "w-0 opacity-0"
+                }`}
               >
                 <input
                   ref={inputRef}
                   type="text"
-                  placeholder="Search animes..."
+                  placeholder="Search wallpapers..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   className="w-full border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] placeholder-[var(--muted)] px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-[var(--accent)] transition-all duration-200"
@@ -188,49 +186,41 @@ function CharacterWallpapersPage() {
             </div>
           </div>
 
-          {/* Title + Toggle */}
+          {/* 🟢 Live/Static Toggle */}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-             
-
-              {!loading && !error && filteredWallpapers.length >= 0 && (
+              {!loading && !error && (
                 <div className="flex items-center gap-2 mt-2 px-3 py-1.5 bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-full text-xs sm:text-sm text-[var(--accent)] font-medium">
                   <FaImages className="w-3 h-3" />
                   <span>
-                    {filteredWallpapers.length}{" "}{characterName}{" "}
-                    {filteredWallpapers.length === 1 ? "Items" : "Items"}
+                    {wallpapers.length} {characterName}{" "}
+                    {wallpapers.length === 1 ? "Item" : "Items"}
                   </span>
                 </div>
               )}
-
             </div>
 
-            {/* 🟢 Live/Static Toggle */}
-       {/* 🟢 Live/Static Toggle — Simple CSS button (recommended) */}
-<div className="flex items-center gap-3">
-  <span className={`text-sm font-medium transition-colors ${!liveOnly ? "text-[var(--accent)]" : "text-[var(--muted)]"}`}>
-    
-  </span>
-
-  <button
-    onClick={() => setLiveOnly((p) => !p)}
-    aria-pressed={liveOnly}
-    className={`relative w-12 h-6 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/40 ${liveOnly ? "bg-[var(--accent)]" : "bg-[var(--border)]"}`}
-    title={liveOnly ? "Showing Live wallpapers" : "Showing Static wallpapers"}
-  >
-    <span
-      className="absolute top-[2px] left-[2px] h-5 w-5 rounded-full bg-white shadow-md transition-transform duration-200"
-      style={{ transform: liveOnly ? "translateX(24px)" : "translateX(0px)" }}
-    />
-  </button>
-
-  <span className={`text-sm font-medium transition-colors ${liveOnly ? "text-[var(--accent)]" : "text-[var(--muted)]"}`}>
-    Live
-  </span>
-</div>
-
-
-
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setLiveOnly((p) => !p)}
+                className={`relative w-12 h-6 rounded-full transition-colors duration-200 focus:outline-none ${
+                  liveOnly ? "bg-[var(--accent)]" : "bg-[var(--border)]"
+                }`}
+                title={liveOnly ? "Showing Live wallpapers" : "Showing Static wallpapers"}
+              >
+                <span
+                  className="absolute top-[2px] left-[2px] h-5 w-5 rounded-full bg-white shadow-md transition-transform duration-200"
+                  style={{ transform: liveOnly ? "translateX(24px)" : "translateX(0px)" }}
+                />
+              </button>
+              <span
+                className={`text-sm font-medium transition-colors ${
+                  liveOnly ? "text-[var(--accent)]" : "text-[var(--muted)]"
+                }`}
+              >
+                Live
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -238,6 +228,7 @@ function CharacterWallpapersPage() {
       {/* ✅ Main Section */}
       <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 py-8 sm:py-12 md:py-16">
         {loading && wallpapers.length === 0 ? (
+          // Skeleton
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {Array.from({ length: 8 }).map((_, i) => (
               <div key={i} className="h-64 rounded-xl bg-[var(--card)] overflow-hidden relative">
@@ -250,11 +241,11 @@ function CharacterWallpapersPage() {
             <div className="text-6xl sm:text-8xl opacity-20">🎨</div>
             <p className="text-[var(--muted)] text-base sm:text-lg">{error}</p>
           </div>
-        ) : filteredWallpapers.length === 0 ? (
+        ) : wallpapers.length === 0 ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 text-center px-4">
             <div className="text-6xl sm:text-8xl opacity-20">🎨</div>
             <p className="text-[var(--muted)] text-base sm:text-lg">
-              No matching items found.
+              No matching wallpapers found.
             </p>
             <button
               onClick={() => setQuery("")}
@@ -267,7 +258,7 @@ function CharacterWallpapersPage() {
           <>
             {/* Wallpapers Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8 auto-rows-fr">
-              {filteredWallpapers.map((wall) => (
+              {wallpapers.map((wall) => (
                 <WallpaperCard key={wall.id || wall.slug} {...wall} />
               ))}
             </div>
