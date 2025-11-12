@@ -5,7 +5,7 @@ import { FaArrowLeft, FaStoreAlt } from "react-icons/fa";
 export default function ShopPage() {
   return (
     <main className="relative min-h-screen flex flex-col items-center justify-center bg-[var(--background)] text-[var(--foreground)] overflow-hidden transition-colors duration-300">
-      {/* 🌌 Animated background that adapts to theme */}
+      {/* 🌌 Animated background */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,var(--accent-transparent,rgba(255,0,150,0.15)),transparent_60%),radial-gradient(circle_at_bottom_left,var(--accent-transparent,rgba(0,180,255,0.15)),transparent_60%)] animate-pulse-slow" />
 
       {/* 🏬 Content */}
@@ -28,8 +28,16 @@ export default function ShopPage() {
           posters, and collectibles. Stay tuned!
         </p>
 
-        {/* Back Button */}
-        
+        {/* 🔙 Back Button */}
+       <div className="mt-10 flex justify-center">
+  <Link
+    href="/"
+    className="inline-flex items-center justify-center "
+  >
+    <FaArrowLeft className="w-5 h-5" />
+  </Link>
+</div>
+
       </div>
     </main>
   );
