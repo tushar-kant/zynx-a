@@ -5,7 +5,7 @@ export const attackOnTitanCharacters = [
     name: "Eren Yeager",
     description: "A determined soldier who vows to destroy all Titans.",
     image:
-      "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762667880/fwefwf_lar33i.jpg",
+      "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762932902/generated-image_1_tgq2e6.jpg",
   },
   {
     id: "402",
