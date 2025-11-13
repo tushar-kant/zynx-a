@@ -17,4 +17,14 @@ export const myHeroAcademiaCharacters = [
     image:
       "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668122/ffwwfew_nre9q2.jpg",
   },
+  {
+  id: "1003",
+  slug: "ochaco-uraraka",
+  name: "Ochaco Uraraka",
+  description:
+    "A cheerful and determined U.A. student with the ability to manipulate gravity, striving to become a pro hero to support her family.",
+  image:
+    "https://res.cloudinary.com/dk0sslz1q/image/upload/v1763015687/generated-image_1_ysnoja.jpg",
+}
+
 ];
