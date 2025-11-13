@@ -12,5 +12,23 @@ export const edwardElricWallpapers = {
       live: false,
       tags: ["Edward Elric", "Fullmetal Alchemist", "Alchemy", "Anime", "Wallpaper", "4K"],
     },
+    {
+      id: "edward-002",
+      slug: "edward-elric-dark-theme",
+      title: "Edward Elric Dark Theme",
+      url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762950549/generated-image_3_wopqa1.jpg",
+      downloadUrl:
+        "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762950549/generated-image_3_wopqa1.jpg",
+      live: false,
+      tags: [
+        "Edward Elric",
+        "Dark Theme",
+        "Fullmetal Alchemist",
+        "Automail",
+        "Anime Aesthetic",
+        "Black Background",
+        "HD",
+      ],
+    },
   ],
 };

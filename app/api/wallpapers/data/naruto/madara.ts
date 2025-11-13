@@ -21,5 +21,24 @@ export const madaraUchihaWallpapers = {
         "4K",
       ],
     },
+    {
+  id: "madara-002",
+  slug: "madara-uchiha-fight-sharingan",
+  title: "Madara Uchiha Fight Sharingan",
+  url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1763004906/madara_q8si8h.jpg",
+  downloadUrl:
+    "https://res.cloudinary.com/dk0sslz1q/image/upload/v1763004906/madara_q8si8h.jpg",
+  live: false,
+  tags: [
+    "Madara Uchiha",
+    "Naruto",
+    "Sharingan",
+    "Fight Mode",
+    "Uchiha Clan",
+    "Anime",
+    "4K",
+  ],
+}
+
   ],
 };
