@@ -39,5 +39,24 @@ export const lightYagamiWallpapers = {
         "HD",
       ],
     },
+    {
+  id: "light-003",
+  slug: "light-yagami-red-aura",
+  title: "Light Yagami Red Aura",
+  url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1763031972/light_cas9pa.jpg",
+  downloadUrl:
+    "https://res.cloudinary.com/dk0sslz1q/image/upload/v1763031972/light_cas9pa.jpg",
+  live: false,
+  tags: [
+    "Light Yagami",
+    "Kira",
+    "Death Note",
+    "Red Aura",
+    "Dark Aesthetic",
+    "Anime",
+    "HD",
+  ],
+},
+
   ],
 };

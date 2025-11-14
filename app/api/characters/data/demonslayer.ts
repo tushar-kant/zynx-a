@@ -44,4 +44,14 @@ export const demonSlayerCharacters = [
     image:
       "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668063/siking-1_rfddmr.jpg",
   },
+  {
+  id: "506",
+  slug: "mitsuri-kanroji",
+  name: "Mitsuri Kanroji",
+  description:
+    "The Love Hashira, known for her unmatched strength, warm heart, and graceful yet powerful techniques.",
+  image:
+    "https://res.cloudinary.com/dk0sslz1q/image/upload/v1763114436/mitsu_o3lw4d.jpg",
+},
+
 ];

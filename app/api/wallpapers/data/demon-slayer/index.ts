@@ -3,6 +3,7 @@ import { inosukeHashibiraWallpapers } from "./inosuke-h";
 import { muzanKibutsujiWallpapers } from "./muzen";
 import { kyojuroRengokuWallpapers } from "./rengoku";
 import { shinobuKochoWallpapers } from "./shinobu-kocho";
+import { mitsuriKanrojiWallpapers } from "./mitsuriKanroj";
 
 export const demonSlayerData = [
   tanjiroWallpapers,
@@ -10,4 +11,5 @@ export const demonSlayerData = [
   muzanKibutsujiWallpapers,
   kyojuroRengokuWallpapers,
   shinobuKochoWallpapers,
+  mitsuriKanrojiWallpapers
 ];
