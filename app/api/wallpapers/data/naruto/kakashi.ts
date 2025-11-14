@@ -12,5 +12,16 @@ export const kakashiWallpapers = {
       live: false,
       tags: ["Kakashi", "Lightning Blade", "Chidori", "Anime", "4K"],
     },
+    {
+  id: "kakashi-002",
+  slug: "kakashi-sharingan-fight",
+  title: "Kakashi Sharingan Fight Mode",
+  url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1763129207/generated-image_6_yocmwp.jpg",
+  downloadUrl:
+    "https://res.cloudinary.com/dk0sslz1q/image/upload/v1763129207/generated-image_6_yocmwp.jpg",
+  live: false,
+  tags: ["Kakashi", "Sharingan", "Fight Mode", "Anime", "4K"],
+},
+
   ],
 };
