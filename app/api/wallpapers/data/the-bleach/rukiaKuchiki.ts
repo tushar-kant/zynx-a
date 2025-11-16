@@ -21,5 +21,25 @@ export const rukiaKuchikiWallpapers = {
         "Wallpaper",
       ],
     },
+    {
+  id: "rukia-002",
+  slug: "rukia-ice-realm-blade",
+  title: "Rukia Ice Realm Blade",
+  url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1763287191/rukia_qljvz7.jpg",
+  downloadUrl:
+    "https://res.cloudinary.com/dk0sslz1q/image/upload/v1763287191/rukia_qljvz7.jpg",
+  live: false,
+  tags: [
+    "Rukia Kuchiki",
+    "Bleach",
+    "Sode no Shirayuki",
+    "Ice",
+    "Soul Reaper",
+    "Anime",
+    "4K",
+    "Wallpaper"
+  ],
+},
+
   ],
 };
