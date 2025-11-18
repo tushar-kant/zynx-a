@@ -3,6 +3,7 @@ export const narutoWallpapers = {
   characterId: "101",
   characterSlug: "naruto-uzumaki",
   list: [
+
     {
       id: "naruto-001",
       slug: "naruto-face-colorful-right-view",
@@ -20,8 +21,25 @@ export const narutoWallpapers = {
         "HD",
       ],
     },
+     {
+  id: "naruto-002",
+  slug: "naruto-kurama-chakra-mode",
+  title: "Naruto Kurama Chakra Mode",
+  url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1763288379/naruto_p89hm0.jpg",
+  downloadUrl:
+    "https://res.cloudinary.com/dk0sslz1q/image/upload/v1763288379/naruto_p89hm0.jpg",
+  live: false,
+  tags: [
+    "Naruto Uzumaki",
+    "Kurama Mode",
+    "Nine Tails Chakra",
+    "Golden Aura",
+    "Anime",
+    "4K",
+  ],
+},
     {
-      id: "naruto-002",
+      id: "naruto-003",
       slug: "naruto-face-colorful-front",
       title: "Naruto Face Colorful Front",
       url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668151/sb8w6dd18yll3lrwm7hu_mfeih3.jpg",
@@ -38,7 +56,7 @@ export const narutoWallpapers = {
       ],
     },
     {
-      id: "naruto-003",
+      id: "naruto-004",
       slug: "naruto-sage-mode",
       title: "Naruto Sage Mode",
       url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1762668145/gr_pgkvkr.jpg",
@@ -54,5 +72,7 @@ export const narutoWallpapers = {
         "4K",
       ],
     },
+   
+
   ],
 };

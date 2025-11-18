@@ -30,6 +30,24 @@ export const sungJinWooWallpapers = {
     "4K",
   ],
 },
+{
+  id: "sung-003",
+  slug: "sung-jinwo-shadow-monarch",
+  title: "Sung Jinwo Shadow Monarch",
+  url: "https://res.cloudinary.com/dk0sslz1q/image/upload/v1763358105/sungji_kuvxee.jpg",
+  downloadUrl:
+    "https://res.cloudinary.com/dk0sslz1q/image/upload/v1763358105/sungji_kuvxee.jpg",
+  live: false,
+  tags: [
+    "Sung Jinwoo",
+    "Shadow Monarch",
+    "Solo Leveling",
+    "Shadow Aura",
+    "Anime",
+    "4K",
+  ],
+},
+
 
   ],
 };
